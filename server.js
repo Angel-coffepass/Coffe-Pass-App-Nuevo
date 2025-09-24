@@ -9,9 +9,11 @@ const port = process.env.PORT || 3000;
 // Middleware
 app.use(express.json());
 app.use(cors());
-app.use(express.static(path.join(__dirname, 'public'))); // Carpeta pública
 
-// Ruta raíz: sirve el index.html
+// Servir archivos estáticos desde la carpeta "public"
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Ruta raíz: envía index.html
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
@@ -33,8 +35,6 @@ const getPool = () => {
     }
     return global.pool;
 };
-
-// Rutas API
 
 // Login
 app.post('/api/login', async (req, res) => {
@@ -64,7 +64,7 @@ app.post('/api/registro', async (req, res) => {
     try {
         const pool = getPool();
         const [existingUsers] = await pool.execute(
-            'SELECT id FROM usuarios WHERE correo = ? OR usuario = ?', 
+            'SELECT id FROM usuarios WHERE correo = ? OR usuario = ?',
             [correo, usuario]
         );
 
