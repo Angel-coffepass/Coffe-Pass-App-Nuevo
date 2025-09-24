@@ -12,12 +12,7 @@ app.use(cors());
 
 // Configura la conexión a tu base de datos MySQL
 // IMPORTANTE: Reemplaza estos valores con tus credenciales
-const pool = mysql.createPool({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_DATABASE
-});
+const pool = mysql.createPool(process.env.DATABASE_URL);
 
 // Ruta de login
 app.post('/api/login', async (req, res) => {
