@@ -1,0 +1,246 @@
+*{
+    box-sizing: border-box;
+}
+body{
+    --bg-color:#F5E6D3;
+    --nav-color:#47302e;
+    --text-color:#e3d7bf;
+    background-color: var(--bg-color );
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+}
+#fondo-video {
+    filter: blur(1px);
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: auto;
+    height: auto;
+    z-index: -1; 
+    background-size: cover; 
+    opacity: 0.7; 
+    display: none;
+}
+.header{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: var(--nav-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 20px;
+    padding: 20px 0;
+    box-shadow: 0 0 4px 0;
+    height: 10dvh;
+}
+
+.header__open-nav-button{
+    background-color: transparent;
+    position: absolute;
+    right: 10px;
+    user-select: none;
+}
+.material-symbols-outlined{
+    color: var(--text-color);
+}
+.header__checkbox{
+    display:none ;
+}
+.header__nav{
+    background-color: var(--nav-color);
+    position: absolute;
+    height: 100vh;
+    width: 100vw;
+    top: 0;
+    z-index:-1;
+    transform: translateY(-100%); /* oculto */
+    transition: transform 0.6s ease;
+}
+.navbar-image{
+    background-color: var();
+    max-width: 100%;
+    width: 64px;
+    margin-left: 10px;  
+    margin-top: .1rem;
+    margin-bottom: .1rem;
+}
+.navbar-buttonsesion{
+    background-color:var(--text-color) ;
+    color: var(--nav-color);
+    position: absolute;
+    padding: 4px 6px 4px 6px;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    opacity: 0.7;
+}
+.navbar-buttonsesion:hover{
+    opacity: 1;
+}
+.navbar__ul {
+    color: var(--text-color);
+    display: flex;
+    flex-direction: column;
+    height: 97dvh;
+    justify-content: center;
+    width: 100%;
+    margin-right:25px ;
+    margin-left: -25px;
+}
+.navbar-item {
+    display: block;
+    color: var(--text-color);
+    list-style: none;
+    margin-bottom: 6rem;
+    width: 103%;
+}
+.navbar-item:first-child{
+    margin-top: 100px;
+}
+.navbar-item a{
+    display: block;
+    color: var(--text-color);
+    text-decoration:none;
+    padding: 10px;
+}
+.navbar-item:last-child a{
+    margin-bottom: 0;
+}
+.navbar-item:hover {
+    border-radius: 5px;
+    background-color: var(--text-color);
+}
+.navbar-item:hover a{
+    color: var(--nav-color);
+    opacity: 0.7;
+}
+
+
+.header__checkbox:checked ~ .header__nav{
+    transform: translate(0);
+}
+
+@media screen and (min-width: 1100px) {
+
+    #fondo-video{
+    display:block;
+    }
+    .header {
+    padding: 20px 40px;
+    justify-content: flex-start;
+}
+
+    .header__open-nav-button,
+    .material-symbols-outlined{
+    visibility: hidden;
+}
+
+    .header__nav {
+    display: flex;
+    position: static; /* Vuelve a ser parte del flujo normal de la página */
+    width: auto;
+    height: auto;
+    background-color: transparent;
+    transform: none; /* Elimina la transformación */
+}
+
+    .navbar-buttonsesion{
+    position: absolute;
+    margin-bottom: 1.2vh;
+    left: 9vw;
+    }
+
+    .navbar__ul {
+    flex-direction: row; /* Convierte el menú en horizontal */
+    width: auto;
+    gap: 2rem; /* Agrega espacio entre los ítems */
+    height: auto;
+    }
+
+    .navbar-item {
+    margin-bottom: 0; /* Elimina el margen inferior */
+    display:inline-block;
+    margin: 0 6px 0 6px;
+    padding: 0;
+    width: 100%;
+}
+
+    .navbar-item:first-child {
+    margin-left: 3rem;
+    margin-top: 0; /* Elimina el margen inferior */
+}
+
+.navbar-item a {
+    color: var(--text-color); /* Ajusta el padding para el estilo de escritorio */
+    white-space: nowrap;
+}
+}
+
+/*-----Fin del nav-----*/
+
+/*----- Estilos para el contenedor de autenticación (login/nombre) -----*/
+#auth-container {
+    position: absolute;
+    right: 1vw;
+    top: 125px;
+    display: flex; /* Para alinear el texto y el botón */
+    align-items: center;
+    gap: 10px; /* Espacio entre el mensaje y el botón */
+}
+
+#welcome-message {
+    background-color: transparent;
+    color: var(--text-color);
+    padding: 4px 6px;
+    white-space: nowrap; /* Evita que el texto se rompa en varias líneas */
+}
+
+
+#login-button {
+    background-color:var(--text-color) ;
+    color: var(--nav-color);
+    position: absolute;
+    right: 11%;
+    top: 10%;
+    margin-right: 1rem;
+    padding: 4px 6px 4px 6px;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    opacity: 0.7;
+    width: 8rem;
+}
+#login-button:hover {
+    opacity: 1;
+}
+
+@media screen and (min-width: 1100px) {
+    #auth-container {
+        position: absolute;
+        top: 1.4rem;
+        right: auto;
+        margin-left: 70%; /* Mueve el contenedor a la derecha */
+        margin-right: 3rem;
+    }
+
+    #welcome-message {
+        background-color: transparent; 
+    }
+}
+
+/*-----FIN estilos para el nombre de usuario-----*/
+/*-----Inicio de apartados de la pagina-----*/
+
+main{
+    --Mtext-color:#000;
+    margin-top: 10dvh;
+}
+.News{
+    color: var(--Mtext-color);
+}

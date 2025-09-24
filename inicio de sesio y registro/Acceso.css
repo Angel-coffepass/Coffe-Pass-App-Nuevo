@@ -1,0 +1,174 @@
+*{
+    box-sizing: border-box;
+}
+body{
+    background-color: #D8BFA3;
+    font-family:'Montserrat';
+    color:#e3d7bf;
+    border: 0;
+    padding: 0;
+    margin-top: 0;
+}
+.form__form{
+    background-color: #F5E6D3;
+    color: #47302e;
+    max-width: 500px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-top: 10px;
+    border-radius: 8px;
+    margin-top: 5rem;
+    box-shadow: 0 0 5px #4b2e2baa;
+}
+.form__title{
+    text-align: center;
+    margin-bottom: 0.2rem;
+    padding: 0px;
+}
+.form__logo{
+    max-width: 125px;
+    border-radius: 50%;
+    margin-bottom: 25px;
+    margin-top: 10px;
+}
+.form__input-container{
+    position: relative;
+}
+.form__input-container label{
+    position: absolute;
+    top: 12px;
+    left: 8px;
+    color: #aaa;
+    font-size: 16px;
+    pointer-events: none;
+    transition: 0.2s ease all;
+}
+
+.form__input-container input{
+    width: 100%;
+    padding: 12px 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    outline: none;
+    background: none;
+    margin-bottom: 5px;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-width:1px ;
+    background-color: transparent;
+    color:#4b2e2b;
+    margin-bottom: 20px;
+}
+.form__input-container input::placeholder{
+    color:#4b2e2b6c;
+}
+.form__fieldset-container{
+    margin-bottom:15px;
+}
+
+input:focus + label,
+input:not(:placeholder-shown) + label {
+    top: -10px;
+    left: 5px;
+    font-size: 12px;
+    color: #333;
+}
+.form-button{
+    padding: 10px 40px;
+    background-color: #47302e;
+    color: #e3d7bf;
+    border-radius: 6px;
+    letter-spacing: 2px;
+    position: relative;
+    top:0;
+    left:0;
+    margin-top: 10px;
+    border: 1px solid transparent;
+    overflow: hidden;
+}
+.form-button:hover{/*lo que regresa del hover*/
+    background-color: #D8BFA3;
+    color: #47302e;
+}
+.mensaje{
+    padding: 0px;
+    text-align: center;
+    margin-left: 11em;
+}
+a{
+    margin: auto;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    color:#47302e;
+    text-decoration: none;
+    font-size: small;
+}
+a:hover{
+    text-decoration: underline #4b2e2b;
+}
+
+fieldset{
+    border: 0.5px solid #e3d7bf;
+    border-radius: 5px;
+    padding: 30px; 
+    width: 70%;
+}
+@media screen and (max-width: 700px) {
+    body{
+        background-color:#F5E6D3;
+    }
+    .form__form{
+        width: 100%;
+        background-color:#F5E6D3;
+        max-width: none;
+        padding:0 ;
+        box-shadow: none;
+    }
+    .form__title{
+        display: none;
+    }
+    .form__logo{
+        margin-top:60px;
+    }
+
+}
+
+/*-----end inicio de sesion-----*/
+.form-registro{
+    margin-top: 5px;
+    margin-bottom: 0;
+    font-size: 10px;
+}
+.registro{
+    margin-top: 0;
+    margin-bottom: 0;
+}
+.registro-imagen{
+    margin-top: 0;
+    margin-bottom: 0;
+    max-width: 15dvh;
+    border-radius:50%;
+}
+.form__registro-titulo{
+    margin-top:0;
+}
+
+.form__fieldset-registro{
+    margin-bottom:0;
+    padding-bottom: 0;
+    max-height: 10dvh;
+}
+
+.m2{
+    margin: 10px 10px 10px 0;
+    font-size: .82rem;
+}
+.link-iniciasesion{
+    text-decoration: underline;
+    margin-left: 4px;
+}
+

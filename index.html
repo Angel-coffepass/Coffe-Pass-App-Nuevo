@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CoffePass</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+</head>
+<body>
+    <video id="fondo-video" autoplay muted loop playsinline>
+        <source src="video-fondo.mp4" type="video/mp4">
+        Tu navegador no soporta el video de fondo.
+    </video>
+    <header class="header">
+        <input type="checkbox" class="header__checkbox" id="open-menu">
+        <label for="open-menu" class="material-symbols-outlined header__open-nav-button" role="button">dehaze</label>
+        <picture class="navbar-image">
+            <img class="navbar-image" src="logo-nav.png">
+        </picture>
+        <nav class="header__nav">
+            <div id="auth-container">
+                <a href="/inicio de sesio y registro/Inicio de sesion.html" class="navbar-buttonsesion" id="login-button">Inicia Sesión</a>
+                <span id="welcome-message"></span>
+                <button id="logout-button" >Cerrar sesión</button>
+            </div>
+            
+            <ul class="navbar__ul">
+                <li class="navbar-item"><a href="#">Mapa</a></li>
+                <li class="navbar-item"><a href="#">Pasaporte de Cafe</a></li>
+                <li class="navbar-item"><a href="#">Promociones</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <div class="News">
+            
+        </div>
+    </main>
+    <script src="index.js"></script>
+</body>
+</html>
