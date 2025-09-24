@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
 
-let pool; // Variable global para la conexión
+let pool;
 
 // Función para establecer la conexión al inicio del servidor
 const connectToDatabase = async () => {
@@ -22,19 +22,22 @@ const connectToDatabase = async () => {
             throw new Error('No se encontró la URL de la base de datos en las variables de entorno.');
         }
         pool = mysql.createPool(dbUrl);
-        await pool.getConnection();
+        await pool.getConnection(); // Intenta una conexión para verificar que funciona
         console.log('¡Conexión a la base de datos exitosa!');
     } catch (error) {
         console.error('Error al conectar con la base de datos:', error);
-        // Lanza el error para que la aplicación no se inicie
         throw error;
     }
 };
 
-// Rutas de tu API
+// Rutas
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
 app.post('/api/login', async (req, res) => {
-    const { email, password } = req.body;
     try {
+        const { email, password } = req.body;
         const [rows] = await pool.execute('SELECT id, nombre, usuario FROM usuarios WHERE usuario = ? AND clave = ?', [email, password]);
         if (rows.length > 0) {
             const user = rows[0];
@@ -49,8 +52,8 @@ app.post('/api/login', async (req, res) => {
 });
 
 app.post('/api/registro', async (req, res) => {
-    const { nombre, apellido, correo, usuario, clave } = req.body;
     try {
+        const { nombre, apellido, correo, usuario, clave } = req.body;
         const [existingUsers] = await pool.execute('SELECT id FROM usuarios WHERE correo = ? OR usuario = ?', [correo, usuario]);
         if (existingUsers.length > 0) {
             return res.status(409).json({ success: false, message: 'Correo o usuario ya existen' });
@@ -63,15 +66,10 @@ app.post('/api/registro', async (req, res) => {
     }
 });
 
-// Ruta raíz
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-
 // Inicia el servidor solo si la conexión a la base de datos es exitosa
 connectToDatabase().then(() => {
     app.listen(port, '0.0.0.0', () => {
-        console.log(`Servidor escuchando en http://localhost:${port}`);
+        console.log(`Servidor escuchando en el puerto ${port}`);
     });
 }).catch(err => {
     console.error('El servidor no se pudo iniciar debido a un error de conexión a la base de datos.');
