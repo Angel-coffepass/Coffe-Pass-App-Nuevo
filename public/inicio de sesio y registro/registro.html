@@ -1,57 +1,59 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registrate en CoffePass</title>
-    <link rel="stylesheet" href="Acceso.css">
-    <link rel="icon" href="../inicio de sesio y registro/icono.png" type="image/png">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">    
-</head>
-<body> 
-    <div class="registro">
-    <form id="registroForm" class="form__form form-registro">
-        <a href="../index.html">
-            <img class="registro-imagen" src="registro-imagen.png.png"/>
-        </a>
-        <h1 class="form__registro-titulo">Crea una cuenta</h1>
-        <fieldset class="form__fieldset-container fieldset-registro">
-        <div class="form__input-container registro-item">
-            <input type="text" id="nombre" placeholder=" " required />
-            <label for="nombre">Nombre Completo</label>
-        </div>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrate en CoffePass</title>
+    <link rel="stylesheet" href="Acceso.css">
+    <link rel="icon" href="../inicio de sesio y registro/icono.png" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">    
+    </head>
+    <body> 
+    <div class="registro">
+    <form id="registroForm" class="form__form form-registro">
+        <a href="../index.html">
+    <img class="registro-imagen" src="registro-imagen.png.png"/>
+        </a>    
+    <h1 class="form__registro-titulo">Crea una cuenta</h1>
+    <fieldset class="form__fieldset-container fieldset-registro">
+    <div class="form__input-container registro-item">
+        <input type="text" id="nombre" placeholder=" " required />
+        <label for="nombre">Nombre Completo</label>
+    </div>  
 
-        <div class="form__input-container registro-item">
-            <input type="text" id="apellido" placeholder=" " required />
-            <label for="apellido">Apellido</label>
-        </div>
+    <div class="form__input-container registro-item">
+        <input type="text" id="apellido" placeholder=" " required />
+        <label for="apellido">Apellido</label>
+    </div>
 
-        <div class="form__input-container registro-item">
-            <input type="email" id="correo" placeholder=" " required />
-            <label for="correo">Correo Electrónico</label>
-        </div>
+    <div class="form__input-container registro-item">
+    <input type="email" id="correo" placeholder=" " required />
+    <label for="correo">Correo Electrónico</label>
+    </div>
 
-        <div class="form__input-container registro-item">
-            <input type="text" id="usuario" placeholder=" " required />
-            <label for="usuario">Nombre de Usuario</label>
-        </div>
+    <div class="form__input-container registro-item">
+    <input type="text" id="usuario" placeholder=" " required />
+    <label for="usuario">Nombre de Usuario</label>
+    </div>
 
-        <div class="form__input-container registro-item">
-            <input type="password" id="clave" placeholder=" " required />
-            <label for="clave">Contraseña</label>
-        </div>
+    <div class="form__input-container registro-item">
+    <input type="password" id="clave" placeholder=" " required />
+    <label for="clave">Contraseña</label>
+    </div>
 
-        <div class="form__input-container registro-item">
-            <input type="password" id="confirmar" placeholder=" " required />
-            <label for="confirmar">Confirmar Contraseña</label>
-        </div>
-        </fieldset>
-        <div>
-            <button class="form-button" type="submit">Registrarse</button>
-        </div> 
-        <span class="m2">¿Ya tienes una cuenta? <a class="link-iniciasesion" href="Inicio de sesion.html">Inicia Sesión</a></span>
-        </form>
-    </div>
-<script src="registro.js"></script>
-</body>
-</html>
+    <div class="form__input-container registro-item">
+    <input type="password" id="confirmar" placeholder=" " required />
+    <label for="confirmar">Confirmar Contraseña</label>
+    </div>
+    </fieldset>
+    <div>
+        <a href="Inicio de sesion.html">
+    <button class="form-button" type="submit">Registrarse</button>
+        </a>
+    </div> 
+    <span class="m2">¿Ya tienes una cuenta? <a class="link-iniciasesion" href="Inicio de sesion.html">Inicia Sesión</a></span>
+    </form>
+    </div>
+    <script src="registro.js"></script>
+    </body>
+    </html>
