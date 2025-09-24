@@ -6,31 +6,39 @@ const path = require('path');
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Middleware
+// Middlewares
 app.use(express.json());
 app.use(cors());
-
-// Servir archivos estáticos desde la carpeta "public"
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Ruta raíz: envía index.html
+// Ruta raíz sirve index.html
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Función para obtener pool MySQL
+// Configuración de MySQL
 const getPool = () => {
     if (!global.pool) {
-        if (process.env.DATABASE_URL) {
-            global.pool = mysql.createPool(process.env.DATABASE_URL);
-        } else {
+        try {
             global.pool = mysql.createPool({
-                host: 'centerbeam.proxy.rlwy.net',
-                port: 53067,
-                user: 'root',
-                password: 'lwIWoRNVXBHfwxbTWKkLfItzTDWigkbN',
-                database: 'railway'
+                host: process.env.MYSQLHOST || 'containers-us-west-123.railway.app',
+                user: process.env.MYSQLUSER || 'root',
+                password: process.env.MYSQLPASSWORD || 'lwIWoRNVXBHfwxbTWKkLfItzTDWigkbN',
+                database: process.env.MYSQLDATABASE || 'railway',
+                port: parseInt(process.env.MYSQLPORT) || 3306,
+                waitForConnections: true,
+                connectionLimit: 10,
+                queueLimit: 0
             });
+            // Test de conexión inicial
+            global.pool.getConnection()
+                .then(conn => {
+                    console.log('✅ MySQL conectado');
+                    conn.release();
+                })
+                .catch(err => console.error('❌ Error conectando MySQL:', err.message));
+        } catch (err) {
+            console.error('❌ Error creando pool MySQL:', err.message);
         }
     }
     return global.pool;
@@ -45,7 +53,6 @@ app.post('/api/login', async (req, res) => {
             'SELECT id, nombre, usuario FROM usuarios WHERE usuario = ? AND clave = ?',
             [email, password]
         );
-
         if (rows.length > 0) {
             const user = rows[0];
             res.json({ success: true, nombre: user.nombre, usuario: user.usuario });
@@ -53,7 +60,7 @@ app.post('/api/login', async (req, res) => {
             res.status(401).json({ success: false, message: 'Credenciales incorrectas' });
         }
     } catch (error) {
-        console.error('Error en login:', error);
+        console.error('Error en login:', error.message);
         res.status(500).json({ success: false, message: 'Error interno del servidor' });
     }
 });
@@ -64,7 +71,7 @@ app.post('/api/registro', async (req, res) => {
     try {
         const pool = getPool();
         const [existingUsers] = await pool.execute(
-            'SELECT id FROM usuarios WHERE correo = ? OR usuario = ?',
+            'SELECT id FROM usuarios WHERE correo = ? OR usuario = ?', 
             [correo, usuario]
         );
 
@@ -79,12 +86,12 @@ app.post('/api/registro', async (req, res) => {
 
         res.status(201).json({ success: true, userId: result.insertId });
     } catch (error) {
-        console.error('Error en registro:', error);
+        console.error('Error en registro:', error.message);
         res.status(500).json({ success: false, message: 'Error interno del servidor' });
     }
 });
 
 // Inicia el servidor
 app.listen(port, '0.0.0.0', () => {
-    console.log(`Servidor escuchando en puerto ${port}`);
+    console.log(`🚀 Servidor escuchando en puerto ${port}`);
 });
