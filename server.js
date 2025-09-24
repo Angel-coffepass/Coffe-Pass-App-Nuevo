@@ -14,15 +14,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 let pool;
 
-// Función para establecer la conexión al inicio del servidor
 const connectToDatabase = async () => {
     try {
         const dbUrl = process.env.DATABASE_URL || process.env.MYSQL_URL;
         if (!dbUrl) {
-            throw new Error('No se encontró la URL de la base de datos en las variables de entorno.');
+            throw new Error('No se encontró la URL de la base de datos.');
         }
         pool = mysql.createPool(dbUrl);
-        await pool.getConnection(); // Intenta una conexión para verificar que funciona
+        await pool.getConnection();
         console.log('¡Conexión a la base de datos exitosa!');
     } catch (error) {
         console.error('Error al conectar con la base de datos:', error);
