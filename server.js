@@ -2,16 +2,20 @@
 const express = require('express');
 const mysql = require('mysql2/promise');
 const cors = require('cors');
+const path = require('path');
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 // Middleware para procesar JSON y permitir solicitudes de origen cruzado
 app.use(express.json());
 app.use(cors());
 
+// **IMPORTANTE: Agregado para servir archivos estáticos (el frontend)**
+app.use(express.static(path.join(__dirname, 'public')));
+
+
 // Configura la conexión a tu base de datos MySQL
-// IMPORTANTE: Reemplaza estos valores con tus credenciales
 const pool = mysql.createPool(process.env.DATABASE_URL);
 
 // Ruta de login
