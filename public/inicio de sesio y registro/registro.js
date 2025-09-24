@@ -38,7 +38,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (data.success) {
                 alert('¡Registro exitoso! Ahora puedes iniciar sesión.');
-                window.location.href = './inicio de sesion.html';
             } else {
                 alert('Error al registrarse: ' + data.message);
             }
