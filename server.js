@@ -5,7 +5,7 @@ const cors = require('cors');
 const path = require('path');
 
 const app = express();
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 3000;
 
 // Middleware
 app.use(express.json());
@@ -67,6 +67,7 @@ app.post('/api/registro', async (req, res) => {
 
 // Inicia el servidor solo si la conexión a la base de datos es exitosa
 connectToDatabase().then(() => {
+    const port = process.env.PORT || 3000;
     app.listen(port, '0.0.0.0', () => {
         console.log(`Servidor escuchando en el puerto ${port}`);
     });
