@@ -13,10 +13,10 @@ app.use(cors());
 // Configura la conexión a tu base de datos MySQL
 // IMPORTANTE: Reemplaza estos valores con tus credenciales
 const pool = mysql.createPool({
-    host: 'localhost',
-    user: 'root',
-    password: 'angel2004Z',
-    database: 'coffeepass_db' // O el nombre de tu base de datos
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE
 });
 
 // Ruta de login
