@@ -242,8 +242,7 @@ title{
 #login-button {
     background-color:var(--text-color) ;
     color: var(--nav-color);
-    position: absolute;
-    right: 11%;
+    right: 1rem;
     top: 10%;
     padding: 4px 6px 4px 6px;
     border: none;
@@ -267,7 +266,7 @@ title{
         
     }
     #login-button{
-        left: 30%;
+        position: static;
     }
     #welcome-message {
         background-color: transparent; 
@@ -296,6 +295,9 @@ title{
         margin-top: 0;
         height: 100vh; /* Puedes usar 100vh si quieres que ocupe toda la pantalla */
     }
+    .description{
+    scroll-margin-top:30rem ;
+}
 }
 
 /*-----FIN estilos para el nombre de usuario-----*/
@@ -332,7 +334,9 @@ main{
     right: 50%;
     transition: transform 0.1s ease-in;
     transform: translateY(7px);
+    
 }
+
 .Introduccion_Down:hover{
     animation-name:bajar;
     animation-duration:1.5s;
@@ -363,6 +367,9 @@ main{
     border-radius: 8px;
     
 }
+.description{
+    scroll-margin-top:16rem ;
+}
 /*-----Fin Introduccion-----*/
 
 
@@ -379,6 +386,7 @@ main{
     align-items: center;
     display: flex;
     flex-direction: column;
+    margin-top: 60rem;
 }
 .mapa-tittle{
     margin: auto;
@@ -432,7 +440,7 @@ main{
         justify-content: center;
         align-items: center;
         max-width: 1200px;
-        margin: 50px auto; 
+        margin: 50rem auto; 
     }
 
     /* 2. Ubicar los elementos dentro de la rejilla */
