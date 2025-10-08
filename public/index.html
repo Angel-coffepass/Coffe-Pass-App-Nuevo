@@ -17,30 +17,35 @@
     </video>
     <header class="header">
         <input type="checkbox" class="header__checkbox" id="open-menu">
-        <label for="open-menu" class="material-symbols-outlined header__open-nav-button" role="button">dehaze</label>
+        <label for="open-menu" class="material-symbols-outlined header__open-nav-button menu-toggle" role="button">dehaze</label>
         <picture class="navbar-image">
             <img class="navbar-image" src="logo-nav.png">
         </picture>
         <nav class="header__nav">
             <div id="auth-container">
                 <a href="inicio de sesio y registro/Inicio de sesion.html" class="navbar-buttonsesion" id="login-button">Inicia Sesión</a>
-                <a href="" class="profile__button" id="welcome-message"></a>
+                <a href="#" class="profile__button" id="welcome-message"></a>
                 <input type="checkbox" id="profile-toggle" class="header__checkbox">
+            
+                <label class="material-symbols-outlined header__open-nav-button" id="logout-button" title="Cerrar sesión" >Logout</label>
             </div> 
-            <div class="profile__section">
-                <label class="material-symbols-outlined header__open-nav-button" id="logout-button" >Logout</label>
-            </div>
+        
             <ul class="navbar__ul">
                 <li class="navbar-item"><a href="#Map">Mapa</a></li>
-                <li class="navbar-item"><a href="#">Pasaporte de Cafe</a></li>
-                <li class="navbar-item"><a href="#">Promociones</a></li>
+                <!--<li class="navbar-item"><a href="#">Pasaporte de Cafe</a></li>
+                <li class="navbar-item"><a href="#">Promociones</a></li>-->
             </ul>
         </nav>
     </header>
     <main>
         <div class="Introduccion">
             <h1>Bienvenido a Coffe Pass</h1>
-            <a class="material-symbols-outlined Introduccion_Down" href="#">Arrow_Drop_Down</a>
+            <a class="material-symbols-outlined Introduccion_Down" href="#desc">Arrow_Drop_Down</a>
+        </div>
+        <div class="description" id="desc">
+            <p>Coffe Pass trata del concepto del pasaporte de café en su versión digitalizada. 
+            Haz que tu experiencia visitando cafeterías sea más divertida al coleccionar tu visita dentro de tu propio pasaporte de café. Registra el QR mediante la app e inmortaliza el momento.
+            </p>
         </div>
         <div class="mapa-container">
         <h2 class="mapa-tittle" id="Map">Mapa de café</h2>

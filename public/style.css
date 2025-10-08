@@ -15,6 +15,9 @@ body::-webkit-scrollbar {
     display: none;
     width: 0; 
 }
+title{
+    background-color: var(--bg-color);
+}
 #fondo-video {
     filter: blur(1px);
     position: fixed;
@@ -52,9 +55,7 @@ body::-webkit-scrollbar {
     user-select: none;
 }
 
-#logout-button{
-    top: 8rem;
-}
+
 .material-symbols-outlined{
     color: var(--text-color);
 }
@@ -141,7 +142,7 @@ body::-webkit-scrollbar {
 
 /*-----PROFILE-----*/
 .profile__section{
-
+    
 }
 #profile-toggle:checked ~ .profile__section {
     display: block; /* Muestra el menú cuando el checkbox está marcado */
@@ -162,8 +163,7 @@ body::-webkit-scrollbar {
     justify-content: flex-start;
 }
 
-    .header__open-nav-button,
-    .header__open-nav-button{
+    .menu-toggle{
     visibility: hidden;
 }
 
@@ -187,6 +187,7 @@ body::-webkit-scrollbar {
     width: auto;
     gap: 2rem; /* Agrega espacio entre los ítems */
     height: auto;
+    margin: 0;
     }
 
     .navbar-item {
@@ -194,7 +195,7 @@ body::-webkit-scrollbar {
     display:inline-block;
     margin: 0 6px 0 6px;
     padding: 0;
-    width: 100%;
+    width: auto;
 }
 
     .navbar-item:first-child {
@@ -208,10 +209,7 @@ body::-webkit-scrollbar {
     .Introduccion_Down{
     display: block;
 }
-    .logout-button{
-    display: none;
-    
-    }
+
 }
 
 /*-----Fin del nav-----*/
@@ -247,7 +245,6 @@ body::-webkit-scrollbar {
     position: absolute;
     right: 11%;
     top: 10%;
-    margin-right: 1rem;
     padding: 4px 6px 4px 6px;
     border: none;
     border-radius: 5px;
@@ -261,17 +258,23 @@ body::-webkit-scrollbar {
 
 @media screen and (min-width: 1100px) {
     #auth-container {
+        display: flex;
+        align-items: center;
         position: absolute;
         top: 1.4rem;
-        right: auto;
-        margin-left: 82%; 
-        margin-right: 3rem;
+        right: 40px;
+        margin-left: 0; 
+        
     }
     #login-button{
         left: 30%;
     }
     #welcome-message {
         background-color: transparent; 
+    }
+    .logout-button{
+        position: static;
+        top: auto;
     }
     .Introduccion{
         margin-top: 100dvh;
@@ -280,6 +283,18 @@ body::-webkit-scrollbar {
         background-color: var(--bg-color);
         padding: 50px;
         border-radius: 10px;
+    }
+    .description{
+ /* Asegura que el contenido (h1, .description) esté centrado */
+        justify-self: center;
+        justify-content: center; 
+        align-items: center;    
+        margin-left: 0;
+        flex-direction: column;  
+
+        /* Elimina el margen superior para que no baje demasiado */
+        margin-top: 0;
+        height: 100vh; /* Puedes usar 100vh si quieres que ocupe toda la pantalla */
     }
 }
 
@@ -333,6 +348,20 @@ main{
     to{
         transform: translateY(25px);
     }
+}
+.description{
+    width: 60dvw;
+    height: auto;
+    margin-bottom: 20rem;
+    margin-top: 10rem;
+    justify-self: center;
+    background-color: var(--nav-color);
+    color: var(--bg-color);
+    text-align: center;
+    padding: 10px 30px;
+    font-size: 15px;
+    border-radius: 8px;
+    
 }
 /*-----Fin Introduccion-----*/
 
@@ -389,7 +418,6 @@ main{
     }
 }*/
 
-@media screen and (min-width: 1100px) {
 
 @media screen and (min-width: 1100px) {
 
@@ -456,5 +484,5 @@ main{
         margin-top: 3rem;
     }
 }
-}
+
 /*-----FIN MAPA-----*/
