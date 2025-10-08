@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 // Importa los módulos necesarios
 const express = require('express');
 const mysql = require('mysql2/promise');
@@ -62,6 +64,21 @@ app.post('/api/registro', async (req, res) => {
     } catch (error) {
         console.error('Error en el registro:', error);
         res.status(500).json({ success: false, message: 'Error interno del servidor' });
+    }
+});
+app.get('/api/cafeterias-cercanas', async (req, res) => {
+    try {
+        // Ejecuta la consulta para obtener todas las cafeterías (debes tener la tabla 'cafeterias' creada)
+        const sql = 'SELECT nombre, direccion, latitud, longitud FROM cafeterias';
+        const [rows] = await pool.execute(sql);
+
+        // Envía los datos al frontend
+        res.json({ success: true, data: rows });
+
+    } catch (error) {
+        // Muestra el error en la terminal si falla la conexión o la consulta SQL
+        console.error('Error al cargar cafeterías desde la DB:', error);
+        res.status(500).json({ success: false, message: 'Error interno del servidor al obtener cafeterías' });
     }
 });
 
