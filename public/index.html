@@ -39,14 +39,30 @@
     </header>
     <main>
         <div class="Introduccion">
-            <h1>Bienvenido a Coffe Pass</h1>
-            <a class="material-symbols-outlined Introduccion_Down" href="#desc">Arrow_Drop_Down</a>
+            <h1>Bienvenido a Coffee Pass</h1>
+            <a class="material-symbols-outlined Introduccion_Down" href="#tutorial">Arrow_Drop_Down</a>
         </div>
-        <div class="description" id="desc">
-            <p>Coffe Pass trata del concepto del pasaporte de café en su versión digitalizada. 
-            Haz que tu experiencia visitando cafeterías sea más divertida al coleccionar tu visita dentro de tu propio pasaporte de café. Registra el QR mediante la app e inmortaliza el momento.
-            </p>
+        <div id="tutorial" class="pic_mobile">
+            <input type="radio" name="slider-nav" id="s-1" checked>
+            <input type="radio" name="slider-nav" id="s-2">
+            <input type="radio" name="slider-nav" id="s-3">
+
+            <div class="slider-pista">
+                <img class="p" src="P1.png" alt="Imagen 1">
+                <img class="p" src="P2.png" alt="Imagen 2">
+                <img class="p" src="P3.png" alt="Imagen 3">
+            </div>
+
+            <div class="botones-nav">
+                <label for="s-2" class="material-symbols-outlined next-btn">Chevron_Right</label>
+                
+                <label for="s-3" class="material-symbols-outlined next-btn-2">Chevron_Right</label>
+                
+                <label for="s-1" class="material-symbols-outlined prev-btn-1">Chevron_Left</label>
+                <label for="s-2" class="material-symbols-outlined prev-btn-2">Chevron_Left</label>
+            </div>
         </div>
+            </div>
         <div class="mapa-container">
         <h2 class="mapa-tittle" id="Map">Mapa de café</h2>
         <div class="mapa" id="mapid"></div>

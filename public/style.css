@@ -141,9 +141,7 @@ title{
 }
 
 /*-----PROFILE-----*/
-.profile__section{
-    
-}
+
 #profile-toggle:checked ~ .profile__section {
     display: block; /* Muestra el menú cuando el checkbox está marcado */
 }
@@ -353,23 +351,73 @@ main{
         transform: translateY(25px);
     }
 }
-.description{
-    width: 60dvw;
-    height: auto;
-    margin-bottom: 20rem;
-    margin-top: 10rem;
-    justify-self: center;
-    background-color: var(--nav-color);
+
+.pic_mobile{
+    scroll-margin-top:4.5rem ;
+}
+.pic_mobile input[type="radio"]{
+    display: none;
+}
+.pic_mobile{
+    width: 100dvw;
+    height: 80dvh;
+    overflow: hidden;
+    position: relative;
+    margin: auto; 
+    filter: brightness(0.9);
+    scroll-margin-top:4.6rem ;
+}
+.slider-pista{
+    display: flex;
+    width: 300dvw;
+    height: 100%;
+    transition: transform 0.5s ease-in-out;
+}
+.slider-pista img{
+    min-width: 100dvw; 
+    height: 100%;
+    object-fit: cover;
+}
+#s-1:checked ~ .slider-pista {
+    transform: translateX(0); 
+}
+#s-2:checked ~ .slider-pista {
+    transform: translateX(-100dvw); 
+}
+#s-3:checked ~ .slider-pista {
+    transform: translateX(-200dvw); 
+}
+.botones-nav label {
+    display: none; 
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 2rem;
+    color: white;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 5px;
+    z-index: 10;
+    border-radius: 50%;
     color: var(--bg-color);
-    text-align: center;
-    padding: 10px 30px;
-    font-size: 15px;
-    border-radius: 8px;
-    
 }
-.description{
-    scroll-margin-top:16rem ;
+#s-1:checked ~ .botones-nav .next-btn {
+    display: block;
+    right: 10px;
 }
+#s-2:checked ~ .botones-nav .prev-btn-1,
+#s-2:checked ~ .botones-nav .next-btn-2 {
+    display: block;
+}
+#s-2:checked ~ .botones-nav .prev-btn-1 { left: 10px; }
+#s-2:checked ~ .botones-nav .next-btn-2 { right: 10px; }
+
+#s-3:checked ~ .botones-nav .prev-btn-2 {
+    display: block;
+    left: 10px;
+}
+
+
 /*-----Fin Introduccion-----*/
 
 
