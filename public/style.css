@@ -365,7 +365,7 @@ main{
     position: relative;
     margin: auto; 
     filter: brightness(0.9);
-    scroll-margin-top:4.5rem ;
+    scroll-margin-top:4.0rem ;
 }
 .slider-pista{
     display: flex;
