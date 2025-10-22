@@ -6,6 +6,7 @@ body{
     --bg-color:#F5E6D3;
     --nav-color:#47302e;
     --text-color:#e3d7bf;
+    --black-color:#47302ecd;
     background-color: var(--bg-color );
     font-family: sans-serif;
     margin: 0;
@@ -17,6 +18,9 @@ body::-webkit-scrollbar {
 }
 title{
     background-color: var(--bg-color);
+}
+a{
+    text-decoration: none;
 }
 #fondo-video {
     filter: blur(1px);
@@ -570,3 +574,80 @@ main{
 }
 
 /*-----FIN MAPA-----*/
+
+/*-----LISTA DE CAFETERIAS-----*/
+.coffee__list{
+    background-color: var(--black-color);
+    height: 90dvh;
+}
+.coffee__list-title{
+    color: var(--bg-color);
+    text-align: center;
+    
+}
+.coffee__list-title-text h2{
+    padding-top: 3rem;
+    padding-bottom: 2rem;
+}
+.list-title{
+    margin-top: 30px;
+}
+.coffee-container-elements{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-items: center;
+    gap:15px;
+    padding: 0 20px;
+    margin: 0 auto;
+}
+
+.coffe-link{
+    text-decoration: none;
+
+}
+.link-container{
+    display: grid;
+    width: 10em;
+    
+}
+.link-container img{
+    width: 9em;
+    height: 120px;
+    object-fit:cover;
+    border-radius: 8px;
+    margin-bottom: 0;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    transition: all 0.5s;
+}
+.link-container-title{
+    color: var(--text-color);
+    margin-top: auto;
+}
+.link-container img:hover{
+    transform: scale(1.06);
+
+}
+@media screen and (min-width: 1100px) {
+    .coffee-container-elements{
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        gap: 15px;
+        padding: 0 20px;
+        margin: 5rem 0 10rem 4rem;
+        justify-items: start;
+    }
+    .coffee__list-title-text h2{
+    padding-top: 3rem;
+    padding-bottom: 1rem;
+}
+    .link-container img{
+    width: 30em;
+    height: 200px;
+    object-fit:cover;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+}
+
+}
+
+/*-----FIN LISTA DE CAFETERIAS-----*/
