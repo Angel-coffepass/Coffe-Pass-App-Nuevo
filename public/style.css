@@ -578,7 +578,8 @@ main{
 /*-----LISTA DE CAFETERIAS-----*/
 .coffee__list{
     background-color: var(--black-color);
-    height: 90dvh;
+    height: 100dvh;
+    scroll-margin-top: 4rem;
 }
 .coffee__list-title{
     color: var(--bg-color);
