@@ -588,6 +588,7 @@ main{
 .coffee__list-title-text h2{
     padding-top: 3rem;
     padding-bottom: 2rem;
+    padding: 40px;
 }
 .list-title{
     margin-top: 30px;
@@ -598,7 +599,7 @@ main{
     justify-items: center;
     gap:13px;
     padding: 0;
-    margin: 0px;
+    margin: 0px 10px 0 0;
 }
 
 .coffe-link{
