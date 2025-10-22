@@ -465,13 +465,15 @@ main{
     display: flex;
     flex-direction: column;
     margin-top: 40rem;
+    
+
 }
 .mapa-tittle{
     margin: auto;
     padding: auto;
     font-size: 25px;
     color: var(--nav-color);
-
+    scroll-margin-top: 8.3rem;
 }
 .mapa-message{
     font-size: 16px;
@@ -598,7 +600,7 @@ main{
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     justify-items: center;
-    gap:15px;
+    gap:13px;
     padding: 0;
     margin: 0px 10px 0 0;
 }
