@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         window.location.href = '/admin/selectorADMIN.html'; // O como se llame tu página
                     } else {
                         // Si es usuario normal, va a la página principal
-                        window.location.href = '../index.htm';
+                        window.location.href = '../index.html';
                     }
 
                 } else {
