@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     // 2. Decidimos a dónde redirigir
                     if (data.role === 'admin') {
                         // Si es admin, va a la pantalla de bienvenida de admin
-                        window.location.href = '/admin/selectorADMIN.html'; // O como se llame tu página
+                        window.location.href = '/Admin/selectorADMIN.html'; // O como se llame tu página
                     } else {
                         // Si es usuario normal, va a la página principal
                         window.location.href = '../index.html';
