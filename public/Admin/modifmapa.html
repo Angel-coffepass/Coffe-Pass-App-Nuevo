@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../inicio de sesio y registro/icono.png" type="image/png">
+    <title>ModificarMapa</title>
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <div class="Agregar-cafeteria">
+        <form class="Agregar-cafeteria-datos" id="form-cafeteria">
+            <fieldset class="form_fieldset">
+                <legend>Agregar cafetería al mapa</legend>
+                <div class="fieldset-data">
+                    <div class="map-data-element">
+                        <label class="label-data" for="nombre">Nombre</label>
+                        <input type="text" id="nombre" name="nombre_cafeteria" required>
+                    </div>
+                    <div class="map-data-element">
+                        <label class="label-data" for="dir">Direccíon</label>
+                        <input type="text" id="dir" name="direccion" required>
+                    </div>
+                    <div class="map-data-element">
+                        <label class="label-data" for="lat">Latitud</label>
+                        <input type="text" id="lat" name="latitud" required>
+                    </div>
+                    <div class="map-data-element">
+                        <label  for="lon">Longitud</label>
+                        <input type="text" id="lon" name="longitud" required>
+                    </div>
+                </div>
+                <button class="registro-cafeteria" type="submit">Agregar</button>
+            </fieldset>
+        </form>
+        <a class="option-button volver" href="selectorADMIN.html"><button >Volver</button></a>
+    </div>
+
+    <script>
+        document.getElementById('form-cafeteria').addEventListener('submit', function(event) {
+            event.preventDefault(); 
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData.entries());
+
+            // --- ¡AQUÍ ESTÁ LA CORRECCIÓN! ---
+            fetch('/api/registrar-cafeteria', { 
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(result => {
+                // Esto es para manejar la respuesta del servidor
+                if (result.success) {
+                    console.log('Éxito:', result);
+                    alert('¡Cafetería registrada!');
+                    this.reset(); // Limpia el formulario
+                } else {
+                    alert('Error: ' + result.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Hubo un error de conexión.');
+            });
+        });
+    </script>
+</body>
+</html>

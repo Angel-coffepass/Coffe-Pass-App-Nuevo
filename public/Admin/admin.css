@@ -1,0 +1,117 @@
+*{
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+body{
+    --bg-color:#F5E6D3;
+    --nav-color:#47302e;
+    --text-color:#e3d7bf;
+    --black-color:#47302ecd;
+    background-color: var(--bg-color );
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+}
+.admin__select{
+    margin-top: 42dvh;
+    align-items: center;
+}
+.admin__select fieldset{
+    text-align: center;
+}
+.admin__select fieldset{
+    align-items: center;
+    display: grid;
+    margin: 20px;
+    border-color: var(--black-color);
+}
+.modificaciones-option{
+    margin-top:15px ;
+}
+.modificaciones-option a{
+    text-decoration: none;
+    color: var(--black-color);
+}
+.option-button{
+    margin-top: 15px;
+    padding: 10px;
+    background-color: var(--black-color);
+    border-radius: 8px;
+    color: var(--black-color);
+}
+.option-button button{
+    text-decoration: none;
+    background-color: transparent;
+    color: var(--text-color);
+    box-shadow: none;
+    z-index: -10;
+    border-color:transparent ;
+    cursor: pointer;
+}
+.option-button a{
+    color: var(--text-color);
+    text-decoration: none;
+    border-color:var(--black-color);
+    
+}
+
+/*----Modificar lista---*/
+.Agregar-cafeteria > a {
+    text-align: center;
+}
+
+.form_fieldset{
+    margin-top: 34dvh;
+    display: grid;
+    border-color: var(--black-color);
+    margin-bottom: 20px;
+}
+.form_fieldset > legend{
+    text-align: center;
+    margin-bottom: 1.5em;
+}
+
+.fieldset-data{
+    display: flex;
+    flex-direction: column;
+}
+.fieldset-data label{
+    color: var(--black-color);
+    margin-left: 10px;
+    margin-right:-10px ;
+}
+.fieldset-data > div{
+    justify-content: space-between;
+    display: flex;
+}
+.fieldset-data input{
+    flex-shrink: 0;
+    margin-right: 120px;
+    width: 50%;
+    background-color: var(--bg-color);
+    outline: 0 0 0 0;
+    
+}
+.fieldset-data input:focus{
+    box-shadow: none;
+    border-color: transparent;
+    outline: none;
+}
+.map-data-element{
+    margin-bottom: 20px;
+}
+.label-data{
+    margin-bottom: 5px;
+}
+.registro-cafeteria{
+    margin-top: 1.5em;
+    padding: 10px;
+    border-radius:8px;
+    background-color: var(--black-color);
+    color: var(--text-color);
+    border-color: transparent;
+    cursor: pointer;
+}
+.volver {
+    margin-left: 43dvw;
+}

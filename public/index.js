@@ -1,124 +1,158 @@
 document.addEventListener('DOMContentLoaded', () => {
     // ----------------------------------------------------------------------
-    // 1. DEFINICIÓN COMPLETA DEL ICONO DE CAFETERÍA
+    // 1. DEFINICIÓN DEL ICONO DE CAFETERÍA
     // Es crucial para el tamaño y la precisión del centrado.
     const CoffeeIcon = L.icon({
-        iconUrl: './assets/icono.png', 
-        iconSize: [38, 50],         // Tamaño del icono (ej. 38x50 píxeles)
-        iconAnchor: [19, 50],       // El punto del icono que está sobre la coordenada (centro inferior)
+        iconUrl: './assets/icono.png', // Asegúrate de que esta ruta sea correcta
+        iconSize: [38, 50],         // Tamaño del icono (ajusta si es necesario)
+        iconAnchor: [19, 50],       // Punto del icono sobre la coordenada (centro inferior)
         popupAnchor: [0, -45]       // Posición del pop-up sobre el icono
     });
     // ----------------------------------------------------------------------
 
-    // Elementos de Autenticación
+    // Elementos de Autenticación y Perfil
     const nombreUsuario = localStorage.getItem('nombreUsuario');
+    const userRole = localStorage.getItem('userRole'); // Obtenemos el rol
     const loginButton = document.getElementById('login-button');
     const welcomeMessage = document.getElementById('welcome-message');
     const logoutButton = document.getElementById('logout-button');
+    const adminLink = document.getElementById('admin-panel-link'); // Enlace del panel de admin
 
+    // Elementos del Menú Desplegable de Perfil
+    const dropdownMenu = document.getElementById('profile-dropdown-menu');
+
+    // Lógica de Autenticación (Mostrar/Ocultar elementos)
     if (nombreUsuario) {
-        loginButton.style.display = 'none';
-        welcomeMessage.textContent = 'Hola, ' + nombreUsuario;
-        welcomeMessage.style.display = 'block';
-        logoutButton.style.display = 'block';
+        // Usuario Logueado
+        loginButton.style.display = 'none'; // Oculta botón de login
+        welcomeMessage.textContent = 'Hola, ' + nombreUsuario; // Muestra saludo
+        welcomeMessage.style.display = 'block'; // Hace visible el saludo (que es el botón del dropdown)
+
+        // Lógica de Roles: Muestra enlace de admin si el rol es 'admin'
+        if (userRole === 'admin' && adminLink) {
+            adminLink.style.display = 'block';
+        }
+
+        // El botón de logout está dentro del menú desplegable, así que no necesita control directo aquí
+        // Asegúrate de que el menú (#profile-dropdown-menu) esté oculto al inicio
+
     } else {
-        loginButton.style.display = 'block';
-        welcomeMessage.style.display = 'none';
-        logoutButton.style.display = 'none';
+        // Usuario NO Logueado
+        loginButton.style.display = 'block'; // Muestra botón de login
+        welcomeMessage.style.display = 'none'; // Oculta saludo
+        if (adminLink) adminLink.style.display = 'none'; // Oculta enlace admin
+        if (dropdownMenu) dropdownMenu.classList.remove('show'); // Asegura que el dropdown esté cerrado
+        // Ocultar logout button explícitamente si está fuera del dropdown y lo necesitas
+        if(logoutButton) logoutButton.style.display = 'none';
     }
-    
-    // Listener de cierre de sesión
-    logoutButton.addEventListener('click', () => {
-        localStorage.removeItem('nombreUsuario');
-        window.location.reload();
-    });
 
-    const map = L.map('mapid').setView([0, 0], 2);
+    // Lógica del Menú Desplegable de Perfil
+    if (welcomeMessage && dropdownMenu) {
+        welcomeMessage.addEventListener('click', (e) => {
+            e.preventDefault();
+            dropdownMenu.classList.toggle('show'); // Muestra/Oculta el menú
+        });
 
-    // 2. Añadir la capa base (OpenStreetMap)
+        // Cierra el menú si se hace clic fuera
+        window.addEventListener('click', (e) => {
+            if (!welcomeMessage.contains(e.target) && !dropdownMenu.contains(e.target)) {
+                dropdownMenu.classList.remove('show');
+            }
+        });
+    }
+
+    // Lógica de Cerrar Sesión (Listener en el botón dentro del dropdown)
+    if (logoutButton) {
+        logoutButton.addEventListener('click', () => {
+            localStorage.removeItem('nombreUsuario');
+            localStorage.removeItem('userRole'); // También elimina el rol al cerrar sesión
+            window.location.reload();
+        });
+    }
+
+    // ----------------------------------------------------
+    // LÓGICA DEL MAPA
+    // ----------------------------------------------------
+    const map = L.map('mapid').setView([0, 0], 2); // Inicializa el mapa
+
+    // Añade la capa base (OpenStreetMap)
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
-    // 3. Obtener la ubicación del usuario (con opciones para mejor precisión)
+    // Obtener la ubicación del usuario
     function obtenerUbicacion() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 (position) => {
                     const lat = position.coords.latitude;
                     const lng = position.coords.longitude;
-                    const accuracy = position.coords.accuracy; // Precisión en metros
+                    const accuracy = position.coords.accuracy;
 
-                    // Centra el mapa en la ubicación del usuario
-                    map.setView([lat, lng], 14); 
-                    
-                    // Marcador de tu ubicación
+                    map.setView([lat, lng], 14); // Centra el mapa
+
+                    // Marcador de ubicación del usuario
                     L.marker([lat, lng]).addTo(map)
                         .bindPopup(`¡Estás aquí! (Precisión: ${Math.round(accuracy)}m)`).openPopup();
-                    
-                    // Dibuja el círculo de precisión para visualizar el margen de error
+
+                    // Círculo de precisión
                     L.circle([lat, lng], {
-                        color: '#47302e',
-                        fillColor: '#47302e',
-                        fillOpacity: 0.1, 
-                        radius: accuracy 
+                        color: '#47302e', // Color del borde del círculo
+                        fillColor: '#47302e', // Color de relleno
+                        fillOpacity: 0.1,
+                        radius: accuracy
                     }).addTo(map);
 
-                    // Carga las cafeterías cercanas
-                    cargarCafeterias(lat, lng); 
+                    cargarCafeterias(lat, lng); // Llama a cargar cafeterías
                 },
                 (error) => {
                     console.error("Error al obtener la ubicación:", error);
-                    alert("No pudimos obtener tu ubicación. El mapa se centrará en una posición por defecto.");
-                    map.setView([20.0, -99.0], 10); // Centrar en una posición por defecto
+                    alert("No pudimos obtener tu ubicación.");
+                    map.setView([20.0, -99.0], 10); // Posición por defecto
                 },
-                {
-                    // Opciones para mejorar la precisión de la geolocalización
-                    enableHighAccuracy: true,
-                    timeout: 10000, 
-                    maximumAge: 0
-                }
+                { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 } // Opciones de precisión
             );
         } else {
-            console.log("Geolocalización no soportada por el navegador.");
-            alert("Tu navegador no soporta geolocalización. El mapa no funcionará correctamente.");
+            console.log("Geolocalización no soportada.");
+            alert("Tu navegador no soporta geolocalización.");
         }
     }
 
-    // 4. Función para cargar y mostrar los marcadores de las cafeterías
+    // Cargar y mostrar marcadores de cafeterías
     async function cargarCafeterias(usuarioLat, usuarioLng) {
-        // Llama a la nueva ruta en el servidor
-        const response = await fetch('/api/cafeterias-cercanas');
-        const data = await response.json();
+        try {
+            // Llama a la ruta del backend
+            const response = await fetch('/api/cafeterias-cercanas');
+            const data = await response.json();
 
-        if (data.success && data.data) {
-            data.data.forEach(cafeteria => {
-                if (cafeteria.latitud && cafeteria.longitud) {
-                    // USO DEL ICONO PERSONALIZADO
-                    L.marker([cafeteria.latitud, cafeteria.longitud], {icon: CoffeeIcon}) 
-                        .addTo(map)
-                        .bindPopup(`<b>${cafeteria.nombre}</b><br>${cafeteria.direccion}`);
-                }
-            });
+            if (data.success && data.data) {
+                data.data.forEach(cafeteria => {
+                    if (cafeteria.latitud && cafeteria.longitud) {
+                        // Crea marcador con icono personalizado
+                        L.marker([cafeteria.latitud, cafeteria.longitud], { icon: CoffeeIcon })
+                            .addTo(map)
+                            .bindPopup(`<b>${cafeteria.nombre}</b><br>${cafeteria.direccion || 'Dirección no disponible'}`);
+                    }
+                });
+            } else {
+                console.error("No se pudieron cargar las cafeterías:", data.message);
+            }
+        } catch(error) {
+            console.error("Error en fetch de cafeterías:", error);
         }
     }
 
-    // Iniciar el proceso de geolocalización al cargar la página
+    // Iniciar geolocalización al cargar la página
     obtenerUbicacion();
 
-    // 1. Selecciona el checkbox (el interruptor del menú)
+    // Lógica para cerrar el menú principal al hacer clic en un enlace (si aplica)
     const menuToggle = document.getElementById('open-menu');
-
-    // 2. Selecciona todos los enlaces (<a>) dentro del menú
-    // Esto selecciona: Mapa, Pasaporte de Cafe, Promociones
-    const navLinks = document.querySelectorAll('.header__nav .navbar-item a'); 
-
-    // 3. Añade un escuchador de eventos a cada enlace
-    navLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            // Al hacer clic, forzamos al checkbox a estar deschequeado (cerrado)
-            menuToggle.checked = false; 
+    const navLinks = document.querySelectorAll('.header__nav .navbar-item a');
+    if (menuToggle && navLinks) {
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                menuToggle.checked = false;
+            });
         });
-    });
-    
+    }
 });

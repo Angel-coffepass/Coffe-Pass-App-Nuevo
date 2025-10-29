@@ -10,12 +10,13 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 // Middleware
-app.use(express.json());
-app.use(cors());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.json()); // Permite a Express entender JSON
+app.use(cors()); // Permite peticiones de otros dominios
+app.use(express.static(path.join(__dirname, 'public'))); // Sirve tus archivos (HTML, CSS, index.js de frontend)
 
 let pool;
 
+// --- FUNCIÓN DE CONEXIÓN A LA BASE DE DATOS ---
 const connectToDatabase = async () => {
     try {
         const dbUrl = process.env.DATABASE_URL || process.env.MYSQL_URL;
@@ -31,18 +32,36 @@ const connectToDatabase = async () => {
     }
 };
 
-// Rutas
+// --- RUTAS DE TU APLICACIÓN ---
+
+// Ruta para la página principal
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
+// Ruta para el login de usuarios
 app.post('/api/login', async (req, res) => {
     try {
         const { email, password } = req.body;
-        const [rows] = await pool.execute('SELECT id, nombre, usuario FROM usuarios WHERE usuario = ? AND clave = ?', [email, password]);
+        
+        // --- CAMBIO 1: Se añade 'rol' al SELECT ---
+        // (Asegúrate de que tu columna se llame 'rol' en la tabla 'usuarios')
+        const [rows] = await pool.execute(
+            'SELECT id, nombre, usuario, rol FROM usuarios WHERE usuario = ? AND clave = ?', 
+            [email, password]
+        );
+        
         if (rows.length > 0) {
             const user = rows[0];
-            res.json({ success: true, nombre: user.nombre, usuario: user.usuario });
+            
+            // --- CAMBIO 2: Se envía el 'rol' en la respuesta JSON ---
+            res.json({ 
+                success: true, 
+                nombre: user.nombre, 
+                usuario: user.usuario, 
+                role: user.rol // <-- ¡Esta es la pieza clave!
+            });
+            
         } else {
             res.status(401).json({ success: false, message: 'Credenciales incorrectas' });
         }
@@ -52,6 +71,7 @@ app.post('/api/login', async (req, res) => {
     }
 });
 
+// Ruta para el registro de nuevos usuarios
 app.post('/api/registro', async (req, res) => {
     try {
         const { nombre, apellido, correo, usuario, clave } = req.body;
@@ -66,23 +86,47 @@ app.post('/api/registro', async (req, res) => {
         res.status(500).json({ success: false, message: 'Error interno del servidor' });
     }
 });
+
+// Ruta para obtener cafeterías (para tu mapa)
 app.get('/api/cafeterias-cercanas', async (req, res) => {
     try {
-        // Ejecuta la consulta para obtener todas las cafeterías (debes tener la tabla 'cafeterias' creada)
         const sql = 'SELECT nombre, direccion, latitud, longitud FROM cafeterias';
         const [rows] = await pool.execute(sql);
-
-        // Envía los datos al frontend
         res.json({ success: true, data: rows });
-
     } catch (error) {
-        // Muestra el error en la terminal si falla la conexión o la consulta SQL
         console.error('Error al cargar cafeterías desde la DB:', error);
         res.status(500).json({ success: false, message: 'Error interno del servidor al obtener cafeterías' });
     }
 });
 
-// Inicia el servidor solo si la conexión a la base de datos es exitosa
+// Ruta para registrar cafeterías (desde el form de admin)
+app.post('/api/registrar-cafeteria', async (req, res) => {
+    try {
+        // Obtenemos los datos del formulario (del fetch que viene de admin.html)
+        const { nombre_cafeteria, direccion, latitud, longitud } = req.body;
+
+        // Validamos que los datos necesarios estén
+        if (!nombre_cafeteria || !latitud || !longitud) {
+            return res.status(400).json({ success: false, message: 'Nombre, latitud y longitud son requeridos.' });
+        }
+
+        // Preparamos el SQL
+        const sql = "INSERT INTO cafeterias (nombre, direccion, latitud, longitud) VALUES (?, ?, ?, ?)";
+        
+        // Ejecutamos la consulta
+        await pool.execute(sql, [nombre_cafeteria, direccion, latitud, longitud]);
+
+        // Enviamos respuesta de éxito (201 = Creado)
+        res.status(201).json({ success: true, message: 'Cafetería registrada exitosamente' });
+
+    } catch (error) {
+        console.error('Error al registrar cafetería:', error);
+        res.status(500).json({ success: false, message: 'Error interno del servidor' });
+    }
+});
+// --------------------------------------------------------------------
+
+// --- INICIAR EL SERVIDOR ---
 connectToDatabase().then(() => {
     const port = process.env.PORT || 3000;
     app.listen(port, '0.0.0.0', () => {
