@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="admin.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="Agregar-cafeteria"> <form class="Agregar-cafeteria-datos" id="form-cafeteria-modificar">
+            <fieldset class="form_fieldset">
+                
+                <legend>Modificar datos de la cafetería</legend>
+                
+                <input type="hidden" id="cafeteria_id">
+                
+                <div class="fieldset-data">
+                    <div class="map-data-element">
+                        <label class="label-data" for="nombre">Nombre</label>
+                        <input type="text" id="nombre" name="nombre" required class="casilla">
+                    </div>
+                    <div class="map-data-element">
+                        <label class="label-data" for="dir">Dirección</label>
+                        <input type="text" id="dir" name="direccion" required class="casilla">
+                    </div>
+                    <div class="map-data-element">
+                        <label class="label-data" for="lat">Latitud</label>
+                        <input type="text" id="lat" name="latitud" required class="casilla">
+                    </div>
+                    <div class="map-data-element">
+                        <label class="label-data" for="lon">Longitud</label>
+                        <input type="text" id="lon" name="longitud" required class="casilla">
+                    </div>
+                </div>
+                
+                <button class="registro-cafeteria" type="submit">Actualizar</button>
+                
+            </fieldset>
+        </form>
+        <a class="option-button volver" href="lista.html"><button>Volver</button></a>
+    </div>
+
+    <script src="modificar.js"></script>
+</body>
+</html>

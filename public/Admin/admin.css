@@ -64,7 +64,7 @@ body{
     margin-top: 34dvh;
     display: grid;
     border-color: var(--black-color);
-    margin-bottom: 20px;
+    margin-bottom: 18px;
 }
 .form_fieldset > legend{
     text-align: center;
@@ -98,7 +98,23 @@ body{
     
 }
 .map-data-element{
-    margin-bottom: 20px;
+    margin-bottom: 15px;
+}
+.map-data-element :last-child{
+    margin-bottom: 0;
+}
+.casilla{
+    outline: none;
+    border: none;
+    border-bottom: 2px solid var(--black-color);
+    text-align: center;
+}
+.casilla:focus{
+    outline: none;
+    border: none;
+    color: var(--bg-color);
+    background-color: var(--black-color);
+
 }
 .label-data{
     margin-bottom: 5px;
@@ -135,4 +151,88 @@ body{
     margin-left: 20dvw;
     margin-right:-10px ;
 }
+}
+/*----Lista ista---*/
+.lista__container{
+    background-color: var(--black-color);
+    margin-right: 1.2em;
+    margin-left: 1.2em;
+    padding: 1em;
+    box-shadow: 0 0 1.5px 1.5px #47302e;
+    border-style: none;
+    text-align: center;
+}
+.lista-title-container{
+    text-align: center;
+    color: var(--bg-color);
+    
+}
+.title-conteiner{
+    margin-top: 3em;
+}
+.lista-items-container{
+    background-color: var(--text-color);
+    text-align: center;
+    padding: 12px 0 12px 0;
+    border-radius: 8px;
+    padding-bottom: 10px;
+
+    
+    
+}
+.cafeteria-item{
+    background-color: var(--bg-color);
+    margin-bottom: 10px;
+    padding: 25px;
+    text-align: center;
+    
+}
+
+.cafeteria-nombre{
+    color: var(--nav-color);
+    text-align: center;
+}
+.cafeteria-acciones{
+    margin-top: 10px;
+}
+.cafeteria-acciones button{
+    background-color: var(--black-color);
+    color: var(--bg-color);
+    box-shadow: none;
+    border-style: none;
+    padding: 8px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+.cafeteria-acciones button:hover{
+    box-shadow: 0 0 1px 1px #47302ea4;
+}
+.añadir-admin-button{
+    text-decoration: none;
+    color: var(--bg-color);
+    padding-top: 10px;
+}
+.back-admin{
+    margin-top: 18px;
+    text-align: center;
+}
+.back-admin-button{
+    text-decoration: none;
+    color: var(--black-color);
+}
+.back-admin-button:hover{
+    background-color: var(--black-color);
+    color: var(--bg-color);
+    padding: 8px;
+    border-radius: 10px;
+}
+@media screen and (min-width: 1100px) {
+    .lista__container{
+        margin: 0;
+    }
+    .cafeteria-item{
+        width: 60dvw;
+        margin-left: 18em;
+        border-radius: 10px;
+    }
 }

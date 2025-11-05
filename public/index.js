@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (userRole === 'admin' && adminLink) {
             adminLink.style.display = 'block';
         }
-
+    
         // El botón de logout está dentro del menú desplegable, así que no necesita control directo aquí
         // Asegúrate de que el menú (#profile-dropdown-menu) esté oculto al inicio
 
@@ -45,6 +45,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // Ocultar logout button explícitamente si está fuera del dropdown y lo necesitas
         if(logoutButton) logoutButton.style.display = 'none';
     }
+    if (userRole === 'admin') {
+        adminbutton.style.display = 'block'; // 4. Muestra el botón de admin
+        }
 
     // Lógica del Menú Desplegable de Perfil
     if (welcomeMessage && dropdownMenu) {
