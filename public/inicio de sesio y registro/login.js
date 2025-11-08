@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.querySelector('.form__form');
-    
     // Asegúrate de que el formulario exista antes de añadir el listener
     if (loginForm) {
         loginForm.addEventListener('submit', async (e) => {
@@ -16,39 +15,29 @@ document.addEventListener('DOMContentLoaded', () => {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        email: usuario, // El servidor espera 'email' y 'password'
+                        email: usuario, // El servidor espera 'email' (que es el 'usuario')
                         password: contraseña
                     })
                 });
-
-                // Primero, obtenemos la respuesta en JSON
                 const data = await response.json();
-
-                // --- INICIO DE LA CORRECCIÓN ---
-
-                // Comprobamos si la respuesta del servidor fue exitosa (ej. 200 OK)
-                // data.success es la lógica de tu API (ej. contraseña correcta)
+                // --- INICIO DE LA MODIFICACIÓN ---
+                // Comprobamos si la respuesta del servidor fue exitosa Y si la data es correcta
                 if (response.ok && data.success) {
-                    
-                    // 1. Guardamos AMBOS datos en localStorage
+                    alert('¡Inicio de sesión exitoso! Bienvenido, ' + data.usuario);
+                    // 1. Guardamos el TOKEN (lo más importante para la seguridad)
+                    localStorage.setItem('authToken', data.token);
+                    // 2. Guardamos el nombre de usuario (solo para el saludo "Hola, ...")
                     localStorage.setItem('nombreUsuario', data.usuario); 
-                    localStorage.setItem('userRole', data.role); // <-- ¡Guardamos el rol!
-
-                    // 2. Decidimos a dónde redirigir
-                    if (data.role === 'admin') {
-                        // Si es admin, va a la pantalla de bienvenida de admin
-                        window.location.href = '/Admin/selectorADMIN.html'; // O como se llame tu página
-                    } else {
-                        // Si es usuario normal, va a la página principal
-                        window.location.href = '../index.html';
-                    }
-
+                    
+                    // 3. (Importante) Nos aseguramos de NO guardar el rol de forma insegura
+                    localStorage.removeItem('userRole'); 
+                    // 4. Redirigimos al index
+                    window.location.href = '../index.html';
                 } else {
                     // Si data.success es false o la respuesta no fue OK
                     alert('Error al iniciar sesión: ' + data.message);
                 }
-                // --- FIN DE LA CORRECCIÓN ---
-
+                // --- FIN DE LA MODIFICACIÓN ---
             } catch (error) {
                 console.error('Error al conectar con el servidor:', error);
                 alert('No se pudo conectar con el servidor. Inténtalo más tarde.');

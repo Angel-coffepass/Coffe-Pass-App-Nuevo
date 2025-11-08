@@ -1,9 +1,5 @@
-
-// Espera a que la página cargue
 document.addEventListener('DOMContentLoaded', () => {
     
-    // 1. OBTENER EL ID DE LA URL
-    // (La URL debe ser "modificar-cafeteria.html?id=5")
     const params = new URLSearchParams(window.location.search);
     const cafeteriaId = params.get('id');
 
@@ -14,14 +10,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const dirField = document.getElementById('dir');
     const latField = document.getElementById('lat');
     const lonField = document.getElementById('lon');
+    const imgPreview = document.getElementById('imagen-actual-preview'); // Preview de imagen
 
     if (!cafeteriaId) {
         alert('Error: No se especificó un ID de cafetería.');
-        window.location.href = 'lista.html'; // Devuelve al admin
+        window.location.href = 'lista.html'; 
     }
 
-    // 2. CARGAR DATOS EXISTENTES DE LA CAFETERÍA
-    // Usamos una nueva ruta GET que debes crear en tu server.js
+    // 1. CARGAR DATOS EXISTENTES
+    // (Asegúrate que tu server.js también devuelva 'imagen_url' en esta ruta)
     fetch(`/api/cafeterias/${cafeteriaId}`) 
         .then(response => response.json())
         .then(data => {
@@ -32,26 +29,43 @@ document.addEventListener('DOMContentLoaded', () => {
                 dirField.value = cafeteria.direccion;
                 latField.value = cafeteria.latitud;
                 lonField.value = cafeteria.longitud;
-                idField.value = cafeteriaId; // Guarda el ID en el campo oculto
+                idField.value = cafeteriaId; 
+                
+                // Muestra la imagen actual
+                if (cafeteria.imagen_url) {
+                    imgPreview.src = cafeteria.imagen_url;
+                } else {
+                    imgPreview.style.display = 'none'; // Oculta si no hay imagen
+                }
             } else {
                 alert('Error al cargar la cafetería: ' + data.message);
             }
         })
         .catch(error => console.error('Error de red:', error));
 
-    // 3. ENVIAR ACTUALIZACIONES (AL HACER SUBMIT)
+    // 2. ENVIAR ACTUALIZACIONES (AL HACER SUBMIT)
     form.addEventListener('submit', async (event) => {
         event.preventDefault(); 
         
+        const token = localStorage.getItem('authToken');
+        if (!token) {
+            alert('Error: No estás autenticado.');
+            return;
+        }
+
+        // --- CORRECCIÓN: USAR FORMDATA ---
+        // 1. Obtenemos el FormData (incluye la imagen si se seleccionó)
         const formData = new FormData(form);
-        const data = Object.fromEntries(formData.entries());
 
         try {
-            // Usamos el método PUT y la ruta específica con el ID
+            // 2. Enviamos el FormData (ya no JSON)
             const response = await fetch(`/api/cafeterias/${cafeteriaId}`, { 
                 method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data),
+                headers: { 
+                    // (No pongas Content-Type, el navegador lo pone solo)
+                    'Authorization': `Bearer ${token}`
+                },
+                body: formData, // <-- Envía el FormData
             });
 
             const result = await response.json();
@@ -66,5 +80,6 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Error:', error);
             alert('Hubo un error de conexión.');
         }
+        // --- FIN DE LA CORRECCIÓN ---
     });
 });

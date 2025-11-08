@@ -115,7 +115,7 @@ a{
     display: block;
     color: var(--text-color);
     list-style: none;
-    margin-bottom: 6rem;
+    margin-bottom: 4.5rem;
     width: 103%;
 }
 .navbar-item:first-child{
@@ -655,3 +655,40 @@ main{
 }
 
 /*-----FIN LISTA DE CAFETERIAS-----*/
+.pasaporte-btn{
+    position: fixed;
+    color: var(--nav-color);
+    bottom: 20px;
+    right: 4dvw;
+    background-color: var(--nav-color);
+    height: 45px;
+    width: 45px;
+    z-index: 30;
+    border-radius: 100%;
+    box-shadow: 0 0 2px var(--nav-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.pasaporte-ruta{
+    color: var(--nav-color);
+    background-color: var(--nav-color);
+    
+}
+.pasaporte-open{
+    margin: 0;
+    padding: 0;
+}
+.pasaporte-close{
+    margin: 0;
+    padding: 0;
+}
+.pasaporte-btn span:first-child{
+    display: none;
+}
+.pasaporte-btn:hover .pasaporte-open{
+    display: none;
+}
+.pasaporte-btn:hover .pasaporte-close{
+    display: block;
+}

@@ -1,8 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Selecciona el contenedor vacío
     const container = document.getElementById('lista-items-container');
 
-    // 2. Llama a la API (Corregido el error de tipeo)
     fetch('/api/cafeterias-cercanas') 
         .then(response => response.json())
         .then(data => {
@@ -13,7 +11,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     const cafeteriaDiv = document.createElement('div');
                     cafeteriaDiv.className = 'cafeteria-item';
 
-                    // 5. HTML interno (Corregido: sin <a> en el botón modificar)
+                    // --- 1. CORRECCIÓN DEL HTML ---
+                    // Quitamos el <a> que rodeaba al botón Modificar.
+                    // Ahora ambos botones son iguales.
                     cafeteriaDiv.innerHTML = `
                         <span class="cafeteria-nombre">${cafeteria.nombre}</span>
                         <div class="cafeteria-acciones">
@@ -21,10 +21,11 @@ document.addEventListener('DOMContentLoaded', () => {
                             <button class="eliminar-btn" data-id="${cafeteria.id}">Eliminar</button>
                         </div>
                     `;
+                    // --- FIN DE LA CORRECCIÓN 1 ---
+
                     container.appendChild(cafeteriaDiv);
                 });
                 
-                // 7. Añadir los eventos
                 agregarEventos(); 
             } else {
                 container.innerHTML = 'Error al cargar las cafeterías.';
@@ -39,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // Función para que los botones de eliminar/modificar funcionen
 function agregarEventos() {
     
-    // Eventos para botones ELIMINAR
+    // Eventos para botones ELIMINAR (Esta parte ya está bien)
     document.querySelectorAll('.eliminar-btn').forEach(button => {
         button.addEventListener('click', async (e) => {
             const id = e.target.dataset.id;
@@ -64,12 +65,19 @@ function agregarEventos() {
         });
     });
 
-    // Eventos para botones MODIFICAR (Añadido)
+    // --- 2. AÑADIR ESTE BLOQUE FALTANTE ---
+    // Eventos para botones MODIFICAR
     document.querySelectorAll('.modificar-btn').forEach(button => {
         button.addEventListener('click', (e) => {
+            // 1. Obtenemos el ID de la cafetería (ej: 5)
             const id = e.target.dataset.id;
-            // Redirige a la página de modificar y pasa el ID
+            
+            // 2. Redirigimos al usuario a la página de modificar Y LE PASAMOS EL ID
+            // Esto resuelve el error "No se especificó un ID"
             window.location.href = `modifiitem.html?id=${id}`;
+            // (Asegúrate de que la página se llame 'modifiitem.html' 
+            //  o 'modificar-cafeteria.html' como la llamaste antes)
         });
     });
+    // --- FIN DEL BLOQUE AÑADIDO ---
 }

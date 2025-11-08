@@ -1,53 +1,71 @@
 document.addEventListener('DOMContentLoaded', () => {
     // ----------------------------------------------------------------------
     // 1. DEFINICIÓN DEL ICONO DE CAFETERÍA
-    // Es crucial para el tamaño y la precisión del centrado.
     const CoffeeIcon = L.icon({
-        iconUrl: './assets/icono.png', // Asegúrate de que esta ruta sea correcta
-        iconSize: [38, 50],         // Tamaño del icono (ajusta si es necesario)
-        iconAnchor: [19, 50],       // Punto del icono sobre la coordenada (centro inferior)
-        popupAnchor: [0, -45]       // Posición del pop-up sobre el icono
+        iconUrl: './assets/icono.png', 
+        iconSize: [38, 50],         
+        iconAnchor: [19, 50],       
+        popupAnchor: [0, -45]       
     });
     // ----------------------------------------------------------------------
 
     // Elementos de Autenticación y Perfil
-    const nombreUsuario = localStorage.getItem('nombreUsuario');
-    const userRole = localStorage.getItem('userRole'); // Obtenemos el rol
     const loginButton = document.getElementById('login-button');
     const welcomeMessage = document.getElementById('welcome-message');
     const logoutButton = document.getElementById('logout-button');
-    const adminLink = document.getElementById('admin-panel-link'); // Enlace del panel de admin
-
-    // Elementos del Menú Desplegable de Perfil
+    const adminLink = document.getElementById('adminbutton');
     const dropdownMenu = document.getElementById('profile-dropdown-menu');
-
-    // Lógica de Autenticación (Mostrar/Ocultar elementos)
-    if (nombreUsuario) {
-        // Usuario Logueado
-        loginButton.style.display = 'none'; // Oculta botón de login
-        welcomeMessage.textContent = 'Hola, ' + nombreUsuario; // Muestra saludo
-        welcomeMessage.style.display = 'block'; // Hace visible el saludo (que es el botón del dropdown)
-
-        // Lógica de Roles: Muestra enlace de admin si el rol es 'admin'
-        if (userRole === 'admin' && adminLink) {
-            adminLink.style.display = 'block';
-        }
     
-        // El botón de logout está dentro del menú desplegable, así que no necesita control directo aquí
-        // Asegúrate de que el menú (#profile-dropdown-menu) esté oculto al inicio
+    // --- INICIO DE LA NUEVA LÓGICA DE AUTENTICACIÓN ---
+    const token = localStorage.getItem('authToken');
+
+    // Función para mostrar la vista de "no logueado"
+    function mostrarEstadoDesconectado() {
+        loginButton.style.display = 'block';
+        welcomeMessage.style.display = 'none';
+        if (adminLink) adminLink.style.display = 'none';
+        if (dropdownMenu) dropdownMenu.classList.remove('show');
+        if (logoutButton) logoutButton.style.display = 'none'; 
+    }
+
+    if (token) {
+        // --- SI HAY TOKEN, VERIFICAR CON EL SERVIDOR ---
+        fetch('/api/verificar-sesion', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}` // Enviamos el token al "guardia"
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                // --- SESIÓN VÁLIDA (Confirmado por el servidor) ---
+                loginButton.style.display = 'none';
+                welcomeMessage.textContent = 'Hola, ' + data.usuario; // Usamos el nombre verificado
+                welcomeMessage.style.display = 'block';
+
+                // Mostramos el botón de admin SOLO SI EL SERVIDOR lo confirma
+                if (data.rol === 'admin' && adminLink) {
+                    adminbutton.style.display = 'block';
+                }
+            } else {
+                // --- SESIÓN INVÁLIDA (Token expiró o es falso) ---
+                localStorage.removeItem('authToken');
+                localStorage.removeItem('nombreUsuario');
+                mostrarEstadoDesconectado();
+            }
+        })
+        .catch(err => {
+            console.error('Error de verificación:', err);
+            mostrarEstadoDesconectado();
+        });
 
     } else {
-        // Usuario NO Logueado
-        loginButton.style.display = 'block'; // Muestra botón de login
-        welcomeMessage.style.display = 'none'; // Oculta saludo
-        if (adminLink) adminLink.style.display = 'none'; // Oculta enlace admin
-        if (dropdownMenu) dropdownMenu.classList.remove('show'); // Asegura que el dropdown esté cerrado
-        // Ocultar logout button explícitamente si está fuera del dropdown y lo necesitas
-        if(logoutButton) logoutButton.style.display = 'none';
+        // --- NO HAY TOKEN (Usuario no logueado) ---
+        mostrarEstadoDesconectado();
     }
-    if (userRole === 'admin') {
-        adminbutton.style.display = 'block'; // 4. Muestra el botón de admin
-        }
+    // --- FIN DE LA NUEVA LÓGICA DE AUTENTICACIÓN ---
+
 
     // Lógica del Menú Desplegable de Perfil
     if (welcomeMessage && dropdownMenu) {
@@ -68,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (logoutButton) {
         logoutButton.addEventListener('click', () => {
             localStorage.removeItem('nombreUsuario');
-            localStorage.removeItem('userRole'); // También elimina el rol al cerrar sesión
+            localStorage.removeItem('authToken'); // <-- (MODIFICADO)
             window.location.reload();
         });
     }
@@ -76,14 +94,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // ----------------------------------------------------
     // LÓGICA DEL MAPA
     // ----------------------------------------------------
-    const map = L.map('mapid').setView([0, 0], 2); // Inicializa el mapa
+    const map = L.map('mapid').setView([0, 0], 2); 
 
-    // Añade la capa base (OpenStreetMap)
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
-    // Obtener la ubicación del usuario
     function obtenerUbicacion() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
@@ -92,28 +108,26 @@ document.addEventListener('DOMContentLoaded', () => {
                     const lng = position.coords.longitude;
                     const accuracy = position.coords.accuracy;
 
-                    map.setView([lat, lng], 14); // Centra el mapa
+                    map.setView([lat, lng], 14); 
 
-                    // Marcador de ubicación del usuario
                     L.marker([lat, lng]).addTo(map)
                         .bindPopup(`¡Estás aquí! (Precisión: ${Math.round(accuracy)}m)`).openPopup();
 
-                    // Círculo de precisión
                     L.circle([lat, lng], {
-                        color: '#47302e', // Color del borde del círculo
-                        fillColor: '#47302e', // Color de relleno
+                        color: '#47302e', 
+                        fillColor: '#47302e', 
                         fillOpacity: 0.1,
                         radius: accuracy
                     }).addTo(map);
 
-                    cargarCafeterias(lat, lng); // Llama a cargar cafeterías
+                    cargarCafeterias(lat, lng); 
                 },
                 (error) => {
                     console.error("Error al obtener la ubicación:", error);
                     alert("No pudimos obtener tu ubicación.");
-                    map.setView([20.0, -99.0], 10); // Posición por defecto
+                    map.setView([20.0, -99.0], 10); 
                 },
-                { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 } // Opciones de precisión
+                { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 } 
             );
         } else {
             console.log("Geolocalización no soportada.");
@@ -121,17 +135,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Cargar y mostrar marcadores de cafeterías
     async function cargarCafeterias(usuarioLat, usuarioLng) {
         try {
-            // Llama a la ruta del backend
             const response = await fetch('/api/cafeterias-cercanas');
             const data = await response.json();
 
             if (data.success && data.data) {
                 data.data.forEach(cafeteria => {
                     if (cafeteria.latitud && cafeteria.longitud) {
-                        // Crea marcador con icono personalizado
                         L.marker([cafeteria.latitud, cafeteria.longitud], { icon: CoffeeIcon })
                             .addTo(map)
                             .bindPopup(`<b>${cafeteria.nombre}</b><br>${cafeteria.direccion || 'Dirección no disponible'}`);
@@ -145,10 +156,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Iniciar geolocalización al cargar la página
     obtenerUbicacion();
 
-    // Lógica para cerrar el menú principal al hacer clic en un enlace (si aplica)
+    // Lógica para cerrar el menú principal (hamburguesa)
     const menuToggle = document.getElementById('open-menu');
     const navLinks = document.querySelectorAll('.header__nav .navbar-item a');
     if (menuToggle && navLinks) {

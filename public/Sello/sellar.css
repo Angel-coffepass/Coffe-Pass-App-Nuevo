@@ -1,0 +1,22 @@
+*{
+    scroll-behavior: smooth;
+}
+body{
+    --bg-color:#F5E6D3;
+    --nav-color:#47302e;
+    --text-color:#e3d7bf;
+    --black-color:#47302ecd;
+    background-color: var(--bg-color);
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+}
+.sello-container{
+    margin-right: auto;
+    margin-left: auto;
+    width: 70%;
+}
+.sello-container a{
+    text-decoration: none;
+    color: var(--black-color);
+}

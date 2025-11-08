@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CoffePass-Blog</title>
+    <link rel="stylesheet" href="blog-style.css">
+    <link rel="icon" href="inicio de sesio y registro/icono.png" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+</head>
+<body>
+    <video id="fondo-video" autoplay muted loop playsinline>
+        <source src="video-fondo.mp4" type="video/mp4">
+        Tu navegador no soporta el video de fondo.
+    </video>
+    <div class="selector_cafeterias">
+        
+        <input type="checkbox" id="toggle-menu" class="menu-check">
+        
+        <label for="toggle-menu" class="toggle">
+            <span class="material-symbols-outlined simbolo">Chevron_Right</span>
+        </label>
+        
+        <div class="menu" id="lista-cafeterias-dropdown">
+            <div class="menu-title-container">
+            <h1 class="menu-title">Elige una cafetería</h1>
+            </div>
+            <div class="opciones-scrollables" id="opciones-scrollables">
+            </div>
+            <a class="volver-boton" href="index.html">Volver</a>
+            </div>
+    </div>
+    <div class="chat-container" id="chat-principal" style="display: none;">
+    
+    <h3 id="chat-titulo">Discusión de: [Selecciona una cafetería]</h3>
+    <fieldset>
+    <div class="comentarios-lista" id="comentarios-lista">
+        </div>
+    </fieldset>
+    <form id="form-opinion" class="form-opinion">
+        <textarea id="comentario-texto" placeholder="Escribe tu opinión aquí..." required></textarea>
+        
+        <label for="comentario-calificacion">Calificación (1-5):</label>
+        <input type="number" id="comentario-calificacion" min="1" max="5" value="5" required>
+        
+        <button type="submit">Enviar</button>
+    </form>
+</div>
+<script src="blog.js" defer></script> 
+</body>
+</html>

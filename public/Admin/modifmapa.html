@@ -9,16 +9,19 @@
 </head>
 <body>
     <div class="Agregar-cafeteria">
-        <form class="Agregar-cafeteria-datos" id="form-cafeteria">
+        
+        <form class="Agregar-cafeteria-datos" id="form-cafeteria" enctype="multipart/form-data">
+            
             <fieldset class="form_fieldset">
-                <legend>Agregar cafetería al mapa</legend>
+                <legend>Agregar cafetería</legend>
                 <div class="fieldset-data">
                     <div class="map-data-element">
                         <label class="label-data" for="nombre">Nombre</label>
-                        <input type="text" id="nombre" name="nombre_cafeteria" required class="casilla">
+                        
+                        <input type="text" id="nombre" name="nombre" required class="casilla">
                     </div>
                     <div class="map-data-element">
-                        <label class="label-data" for="dir">Direccíon</label>
+                        <label class="label-data" for="dir">Dirección</label>
                         <input type="text" id="dir" name="direccion" required class="casilla">
                     </div>
                     <div class="map-data-element">
@@ -26,8 +29,12 @@
                         <input type="text" id="lat" name="latitud" required class="casilla">
                     </div>
                     <div class="map-data-element">
-                        <label  for="lon">Longitud</label>
+                        <label CFG_GTP_User_Review_Tool_Stop_Marker_cfg for="lon">Longitud</label>
                         <input type="text" id="lon" name="longitud" required class="casilla">
+                    </div>
+                    <div class="map-data-element">
+                        <label class="label-data" for="imagen">Imagen</label>
+                        <input type="file" id="imagen" name="imagen" accept="image/*" required>
                     </div>
                 </div>
                 <button class="registro-cafeteria" type="submit">Agregar</button>
@@ -37,32 +44,37 @@
     </div>
 
     <script>
-        document.getElementById('form-cafeteria').addEventListener('submit', function(event) {
+        document.getElementById('form-cafeteria').addEventListener('submit', async function(event) {
             event.preventDefault(); 
             const formData = new FormData(this);
-            const data = Object.fromEntries(formData.entries());
+            const token = localStorage.getItem('authToken');
 
-            // --- ¡AQUÍ ESTÁ LA CORRECCIÓN! ---
-            fetch('/api/registrar-cafeteria', { 
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data),
-            })
-            .then(response => response.json())
-            .then(result => {
-                // Esto es para manejar la respuesta del servidor
+            if (!token) {
+                alert('Error: No estás autenticado como administrador.');
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/registrar-cafeteria', { 
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: formData, 
+                });
+                
+                const result = await response.json();
+
                 if (result.success) {
-                    console.log('Éxito:', result);
-                    alert('¡Cafetería registrada!');
-                    this.reset(); // Limpia el formulario
+                    alert('¡Cafetería registrada con éxito!');
+                    this.reset(); 
                 } else {
-                    alert('Error: ' + result.message);
+                    alert('Error al registrar: ' + result.message);
                 }
-            })
-            .catch(error => {
+            } catch (error) {
                 console.error('Error:', error);
                 alert('Hubo un error de conexión.');
-            });
+            }
         });
     </script>
 </body>
