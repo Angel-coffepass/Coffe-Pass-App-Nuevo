@@ -137,3 +137,9 @@ dist
 # Vite logs files
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+
+# Ignora la carpeta de módulos de Node (son muy pesados)
+node_modules
+
+# CLAVE: Ignora el archivo de variables de entorno locales (contiene contraseñas)
+.env
