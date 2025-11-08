@@ -116,7 +116,7 @@ app.post('/api/login', async (req, res) => {
         console.error('Error en el login:', error);
         res.status(500).json({ success: false, message: 'Error interno del servidor' });
     }
-});
+});//t
 
 // Ruta para el registro de nuevos usuarios
 app.post('/api/registro', async (req, res) => {
