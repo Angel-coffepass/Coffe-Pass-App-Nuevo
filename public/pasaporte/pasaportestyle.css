@@ -119,3 +119,9 @@ body{
 .cafeteria-pasaporte.estampado .sello-imagen{
     display: block;
 }
+@media screen and (max-width: 500px) {
+    .sello-imagen{
+        top: 20rem;
+        left: 3.9rem;
+    }
+}
