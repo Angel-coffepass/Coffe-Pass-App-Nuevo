@@ -123,5 +123,6 @@ body{
     .sello-imagen{
         top: 20rem;
         left: 3.9rem;
+        max-width: 15.8;
     }
 }
