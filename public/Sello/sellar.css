@@ -17,6 +17,8 @@ body{
     width: 70%;
 }
 .sello-container a{
+    display: grid;
+    margin-top: 2rem;
     text-decoration: none;
     color: var(--black-color);
 }
