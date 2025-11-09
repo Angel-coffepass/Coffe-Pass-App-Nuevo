@@ -43,7 +43,7 @@ body{
     z-index: 11;
 }
 .opciones-scrollables{
-    height: 80%;
+    height: 70%;
     z-index: 10;
     flex-grow: 1;
     overflow-y: auto;
