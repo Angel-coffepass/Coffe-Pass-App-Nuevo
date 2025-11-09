@@ -136,6 +136,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function cargarCafeterias(usuarioLat, usuarioLng) {
+        const listaContainer = document.getElementById('cafeteria-list-grid');
+        if (!listaContainer) return; // Si no estamos en la página del grid, no hagas nada
         try {
             const response = await fetch('/api/cafeterias-cercanas');
             const data = await response.json();
@@ -147,7 +149,48 @@ document.addEventListener('DOMContentLoaded', () => {
                             .addTo(map)
                             .bindPopup(`<b>${cafeteria.nombre}</b><br>${cafeteria.direccion || 'Dirección no disponible'}`);
                     }
-                });
+// --- B. NUEVA LÓGICA (Para construir la lista) ---
+                
+                // 1. Crea el enlace <a> (la tarjeta)
+                const link = document.createElement('a');
+                link.className = 'coffee-link';
+                link.href = `javascript:void(0)`; // O #0
+
+                // 2. Crea el contenido interno
+                const div = document.createElement('div');
+                div.className = 'link-container';
+
+                const img = document.createElement('img');
+                
+                // Usa la imagen de la DB, o una imagen por defecto si no existe
+                img.src = cafeteria.imagen_url || 'comingsoon.png'; // <-- Asegúrate de que tu API devuelva imagen_url
+                img.alt = cafeteria.nombre;
+
+                const p = document.createElement('p');
+                p.className = 'link-container-title';
+                p.textContent = cafeteria.nombre;
+
+                // 3. Ensambla la tarjeta
+                div.appendChild(img);
+                div.appendChild(p);
+                link.appendChild(div);
+
+                // 4. Añade la tarjeta al contenedor del grid
+                listaContainer.appendChild(link);
+                // --- FIN DE LA NUEVA LÓGICA ---
+            });
+            
+            // (Opcional) Añadir las tarjetas "Coming Soon" estáticas si aún no hay 5
+            while (listaContainer.childElementCount < 5) {
+                listaContainer.innerHTML += `
+                    <a class="coffee-link" href="javascript:void(0)">
+                        <div class="link-container">
+                            <img src="comingsoon.png" alt="Próximamente">
+                            <p class="link-container-title">Próximamente</p>
+                        </div>
+                    </a>
+                `;
+            }
             } else {
                 console.error("No se pudieron cargar las cafeterías:", data.message);
             }

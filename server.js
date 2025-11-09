@@ -149,7 +149,7 @@ app.get('/api/verificar-sesion', verificarToken, (req, res) => {
 // Ruta para obtener cafeterías (para tu mapa y admin)
 app.get('/api/cafeterias-cercanas', async (req, res) => {
     try {
-        const sql = 'SELECT id, nombre, direccion, latitud, longitud FROM cafeterias';
+        const sql = 'SELECT id, nombre, direccion, latitud, longitud, imagen_url FROM cafeterias';
         const [rows] = await pool.execute(sql);
         res.json({ success: true, data: rows });
     } catch (error) {
