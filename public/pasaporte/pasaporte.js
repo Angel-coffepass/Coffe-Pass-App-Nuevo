@@ -52,8 +52,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const cafeteria = todasLasCafeterias[indice];
             
             // Asigna la clase 'estampado' al contenedor principal si fue visitado
-            //paginaActiva.className = `pagina-activa cafeteria-pasaporte estampado`;
-            paginaActiva.className = `pagina-activa cafeteria-pasaporte ${cafeteria.visitado ? 'estampado' : ''}`;
+            paginaActiva.className = `pagina-activa cafeteria-pasaporte estampado`;
+            //paginaActiva.className = `pagina-activa cafeteria-pasaporte ${cafeteria.visitado ? 'estampado' : ''}`;
             
             // Creamos el HTML para esa cafetería
             paginaActiva.innerHTML = `

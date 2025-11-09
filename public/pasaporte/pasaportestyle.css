@@ -1,5 +1,11 @@
-*{
+*,
+*::before,
+*::after
+{
     scroll-behavior: smooth;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 body{
     --bg-color:#F5E6D3;
@@ -15,15 +21,15 @@ body{
 }
 
 .pasaporte-container{
-    height: 100px;
-    max-width: 400px;
+    height: 6.25rem;
+    max-width: 25rem;
     width: 90%;
     background-color: var(--black-color);
     margin-top: 11dvh;
     margin-left: auto;
     margin-right: auto;
     border-radius: 0 25px 25px 0;
-    box-shadow: 0 0 6px black;
+    box-shadow:  100px solid black;
     position: relative;
 }
 .portada-pasaporte{
@@ -45,7 +51,7 @@ body{
     margin-bottom: 0;
 }
 .imagen-contenedor img{
-    margin-top: 30px;
+    margin-top: 1.875rem;
     max-width: 80%;
     border-radius: 8px;
     
@@ -58,7 +64,7 @@ body{
 .cafeteria-pasaporte h3{
     color: var(--nav-color);
     font-size: 30px;
-    margin-top: 20px;
+    margin-top: 1.25rem;
     margin-bottom: 0;
 }
 .cafeteria-pasaporte p{
@@ -68,9 +74,9 @@ body{
 /*----Botones----*/
 .navegacion{
     position: absolute;
-    height: 30px;
+    height: 1.875rem;
     width: 100%;
-    bottom: -200px;
+    bottom: -12.5rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -79,9 +85,9 @@ body{
 .navegacion button{
     background-color: var(--black-color);
     color: var(--bg-color);
-    font-size:28px;
-    height: 40px;
-    width: 40px;
+    font-size:1.75rem;
+    height: 2.5rem;
+    width: 2.5rem;
     border-radius:50% ;
     justify-content: space-between;
     align-items: center;
@@ -89,21 +95,21 @@ body{
     user-select: none;
 }
 .btn-anterior{
-    margin-left: 3px;
+    margin-left: 0.188rem;
 }
 .btn-siguiente{
-    margin-right: 3px;
+    margin-right: 0.188rem;
 }
 
 /*----Sello----*/
 .sello-imagen{
     display: none;
     position: absolute;
-    top: 340px;
-    left: 85px;
+    top: 21.25rem;
+    left: 5.313rem;
     z-index: 30;
-    max-width:269px;
-    height: 210px;
+    max-width:16.8123rem;
+    height: 13.125rem;
     transform: rotate(-25deg);
     margin-bottom: 0;
     margin-top: 0;
