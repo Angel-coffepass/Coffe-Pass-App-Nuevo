@@ -38,11 +38,17 @@ body{
     background-size: cover;
     border-radius: 0 25px 25px 0;
     height: 80dvh;
+    margin-bottom: 0;
+}
+.imagen-contenedor{
+    position: relative;
+    margin-bottom: 0;
 }
 .imagen-contenedor img{
     margin-top: 30px;
     max-width: 80%;
     border-radius: 8px;
+    
 }
 
 .cafeteria-pasaporte{
@@ -53,10 +59,10 @@ body{
     color: var(--nav-color);
     font-size: 30px;
     margin-top: 20px;
-    
+    margin-bottom: 0;
 }
 .cafeteria-pasaporte p{
-    
+
 }
 
 /*----Botones----*/
@@ -68,6 +74,7 @@ body{
     display: flex;
     justify-content: space-between;
     align-items: center;
+    
 }
 .navegacion button{
     background-color: var(--black-color);
@@ -92,10 +99,17 @@ body{
 .sello-imagen{
     display: none;
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 340px;
+    left: 85px;
     z-index: 30;
+    max-width:269px;
+    height: 210px;
+    transform: rotate(-25deg);
+    margin-bottom: 0;
+    margin-top: 0;
+    padding-bottom: 0;
 }
+
 .cafeteria-pasaporte.estampado .sello-imagen{
     display: block;
 }
