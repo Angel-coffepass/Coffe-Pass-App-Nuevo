@@ -52,13 +52,19 @@ document.addEventListener('DOMContentLoaded', () => {
             const cafeteria = todasLasCafeterias[indice];
             
             // Asigna la clase 'estampado' al contenedor principal si fue visitado
-            //paginaActiva.className = `pagina-activa cafeteria-pasaporte estampado`;
-            paginaActiva.className = `pagina-activa cafeteria-pasaporte ${cafeteria.visitado ? 'estampado' : ''}`;
-            
+        const estadoClase = cafeteria.visitado ? 'estampado' : 'bloqueado';
+        paginaActiva.className = `pagina-activa cafeteria-pasaporte estampado`;
+        //paginaActiva.className = `pagina-activa cafeteria-pasaporte ${estadoClase}`;
             // Creamos el HTML para esa cafetería
             paginaActiva.innerHTML = `
                 <div class="imagen-contenedor">
                     <img src="${cafeteria.imagen_url || './assets/default-image.png'}" alt="${cafeteria.nombre}">
+                
+                    
+                
+                    <div class="candado-icono">
+                    <span class="material-symbols-outlined">lock</span>
+                    </div>
                 </div>
 
                 <h3>${cafeteria.nombre}</h3>

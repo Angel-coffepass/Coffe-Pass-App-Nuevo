@@ -149,7 +149,29 @@ app.get('/api/verificar-sesion', verificarToken, (req, res) => {
 // Ruta para obtener cafeterías (para tu mapa y admin)
 app.get('/api/cafeterias-cercanas', async (req, res) => {
     try {
-        const sql = 'SELECT id, nombre, direccion, latitud, longitud, imagen_url FROM cafeterias';
+        const sql = `
+            SELECT 
+                c.id, 
+                c.nombre, 
+                c.direccion, 
+                c.latitud, 
+                c.longitud, 
+                c.imagen_url,
+                
+                -- Calcula el promedio de calificaciones y lo redondea a 1 decimal
+                -- Si no hay opiniones (COUNT = 0), devuelve 0 en lugar de NULL
+                CASE 
+                    WHEN COUNT(o.id) > 0 THEN ROUND(AVG(o.calificacion), 1) 
+                    ELSE 0 
+                END AS calificacion_promedio
+                
+            FROM 
+                cafeterias c
+            LEFT JOIN 
+                opiniones o ON c.id = o.id_cafeteria
+            GROUP BY 
+                c.id;
+        `;
         const [rows] = await pool.execute(sql);
         res.json({ success: true, data: rows });
     } catch (error) {
@@ -374,6 +396,38 @@ app.get('/api/pasaporte', verificarToken, async (req, res) => {
     } catch (error) {
         console.error('Error al obtener pasaporte:', error);
         res.status(500).json({ success: false, message: 'Error interno del servidor.' });
+    }
+});
+// Ruta para SEGUIR/DEJAR DE SEGUIR (Toggle)
+app.post('/api/seguir', verificarToken, async (req, res) => {
+    const id_usuario = req.user.id;
+    const { id_cafeteria } = req.body;
+
+    try {
+        // 1. Verificamos si ya la sigue
+        const [existe] = await pool.execute(
+            'SELECT * FROM seguidores WHERE id_usuario = ? AND id_cafeteria = ?',
+            [id_usuario, id_cafeteria]
+        );
+
+        if (existe.length > 0) {
+            // Si ya existe, lo borramos (Dejar de seguir)
+            await pool.execute(
+                'DELETE FROM seguidores WHERE id_usuario = ? AND id_cafeteria = ?',
+                [id_usuario, id_cafeteria]
+            );
+            res.json({ success: true, estado: 'no_siguiendo', message: 'Dejaste de seguir.' });
+        } else {
+            // Si no existe, lo creamos (Seguir)
+            await pool.execute(
+                'INSERT INTO seguidores (id_usuario, id_cafeteria) VALUES (?, ?)',
+                [id_usuario, id_cafeteria]
+            );
+            res.json({ success: true, estado: 'siguiendo', message: '¡Ahora sigues esta cafetería!' });
+        }
+    } catch (error) {
+        console.error('Error al seguir:', error);
+        res.status(500).json({ success: false, message: 'Error del servidor.' });
     }
 });
 

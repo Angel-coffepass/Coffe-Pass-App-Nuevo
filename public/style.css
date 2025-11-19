@@ -357,24 +357,24 @@ main{
 }
 
 .pic_mobile{
-    scroll-margin-top:4.5rem ;
+    scroll-margin-top:3rem ;
 }
 .pic_mobile input[type="radio"]{
     display: none;
 }
 .pic_mobile{
     width: 100dvw;
-    height: 80dvh;
+    height: 90dvh;
     overflow: hidden;
     position: relative;
     margin: auto; 
     filter: brightness(0.9);
-    scroll-margin-top:4.0rem ;
+    scroll-margin-top:2.0rem ;
 }
 .slider-pista{
     display: flex;
     width: 300dvw;
-    height: 100%;
+    height: 90dvh;
     transition: transform 0.5s ease-in-out;
 }
 .slider-pista div{
@@ -392,9 +392,10 @@ main{
     background-image: url(P3.png);
 }
 .p1, .p2, .p3{
-    background-size:cover;
+    background-size:contain;
     background-repeat: no-repeat;
     background-position: center;
+    height: 100dvh;
 }
 #s-1:checked ~ .slider-pista {
     transform: translateX(0); 
@@ -445,7 +446,18 @@ main{
 .p3{
     background-image: url(P3pc.png);
 }
+.p1, .p2, .p3{
+    background-size:cover;
 }
+.pic_mobile{
+    height: 76dvh;
+    scroll-margin-top:4.875rem ;
+}
+.slider-pista{
+    height: 100%;
+}
+}
+
 
 /*-----Fin Introduccion-----*/
 
@@ -610,8 +622,7 @@ main{
 
 }
 .link-container{
-    display: grid;
-    width: 5em;
+    
     
 }
 .link-container img{
@@ -629,7 +640,24 @@ main{
 }
 .link-container img:hover{
     transform: scale(1.06);
-
+}
+.link-container{
+    position: relative;
+}
+.cafeteria-calificacion {
+    /* CLAVE 2: Posiciona la estrella */
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 5; /* Se asegura de que esté sobre la imagen */
+    
+    /* Estilos visuales */
+    background-color: rgba(0, 0, 0, 0.7); 
+    color: white;
+    padding: 4px 8px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: bold;
 }
 @media screen and (min-width: 1100px) {
     .coffee-container-elements{
@@ -644,7 +672,7 @@ main{
     padding-bottom: 1rem;
 }
     .link-container img{
-    width: 27em;
+    width: 24em;
     height: 180px;
     object-fit:cover;
     border-radius: 8px;
@@ -691,4 +719,129 @@ main{
 }
 .pasaporte-btn:hover .pasaporte-close{
     display: block;
+}
+
+/* El fondo oscuro que cubre la página */
+.modal-overlay {
+    display: none; /* Oculto por defecto */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Oscuro semitransparente */
+    z-index: 1001; /* Encima de todo, excepto el modal */
+}
+
+/* La tarjeta modal */
+.modal {
+    display: none; /* Oculto por defecto */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    /* Centrado perfecto */
+    transform: translate(-50%, -50%); 
+    
+    background-color: var(--bg-color); /* Usa tus colores */
+    color: var(--nav-color);
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    z-index: 2000; /* Encima de todo */
+    
+    width: 90%;
+    max-width: 500px; /* Ancho máximo en PC */
+}
+
+/* Clase 'active' que añadirá JS para mostrar todo */
+.modal.active,
+.modal-overlay.active {
+    display: block;
+}
+
+/* Estilos del contenido del modal */
+.modal img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+.modal h2 {
+    margin-top: 15px;
+    margin-bottom: 5px;
+}
+.modal p {
+    margin-top: 0;
+}
+.modal-close-btn {
+    position: absolute;
+    top: 0px;
+    right: 5px;
+    font-size: 2rem;
+    font-weight: bold;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--nav-color);
+    opacity: 100%;
+}
+.modal-close-btn:hover {
+    color: #000;
+}
+
+/* Estilo para el mapa dentro del modal */
+#modal-map {
+    height: 200px;
+    width: 100%;
+    border-radius: 8px;
+    margin-top: 15px;
+}
+
+/* Contenedor fijo para las notificaciones */
+#notification-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 3000; /* Por encima de todo, incluso del modal */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Estilo de la tarjeta de notificación individual */
+.notificacion-toast {
+    background-color: var(--nav-color); /* Tu color café oscuro */
+    color: var(--bg-color); /* Tu color crema */
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    cursor: pointer; /* Indica que es clickeable */
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    animation: slideIn 0.3s ease-out, fadeOut 0.5s ease-in 4.5s forwards;
+    border-left: 5px solid #4CAF50; /* Borde verde */
+    min-width: 250px;
+}
+
+.notificacion-toast:hover {
+    transform: scale(1.02); /* Efecto al pasar el mouse */
+}
+.btn-seguir{
+    color: #ffe;
+    text-decoration: none;
+    background-color: var(--Mtext-color);
+    position: absolute;
+    top: -18px;
+    padding: 7px;
+    border-radius: 18px;
+    border-style: none;
+}
+/* Animaciones de entrada y salida */
+@keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+@keyframes fadeOut {
+    to { opacity: 0; visibility: hidden; }
 }
