@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <h3>${cafeteria.nombre}</h3>
                 <p>ubi: ${cafeteria.direccion || 'Dirección no disponible'}</p>
 
-                <img src="./assets/Sello.png" class="sello-imagen" alt="Sellado">
+                <img src="Sello.png" class="sello-imagen" alt="Sellado">
             `;
         }
         // Actualiza el estado de los botones
