@@ -1,5 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
     
+    // 🛑 IMPORTANTE: ASEGÚRATE DE DEFINIR LA URL BASE AQUÍ O PASARLA GLOBALMENTE.
+    // Si este es un archivo JS separado, debe definirse la URL absoluta de tu API.
+    const API_BASE_URL = "https://coffe-pass-app-nuevo-production.up.railway.app";
+    // --------------------------------------------------------------------------
+
     // 1. REFERENCIAS A LOS ELEMENTOS DEL HTML
     const paginaActiva = document.querySelector('.pagina-activa');
     const btnAnterior = document.querySelector('.btn-anterior');
@@ -27,7 +32,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if (data.success) {
                 todasLasCafeterias = data.data; // Guardamos la lista de cafeterías
                 if (todasLasCafeterias.length > 0) {
-                    mostrarPagina(indiceActual); // Mostramos la primera página
+                    // Si el índice actual es -1, mostrará la portada.
+                    // Si se carga por primera vez y queremos mostrar la primera cafetería, 
+                    // deberíamos inicializar indiceActual a 0, o llamarlo con 0.
+                    // Pero manteniendo tu lógica de -1 para la portada, usamos -1.
+                    mostrarPagina(indiceActual); 
                 } else {
                     paginaActiva.innerHTML = "<p>Aún no has visitado ninguna cafetería.</p>";
                 }
@@ -40,6 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // 3. FUNCIÓN PARA MOSTRAR LA PÁGINA ESPECÍFICA
     function mostrarPagina(indice) {
         if (indice === -1) {
             // Si el índice es -1, muestra la portada
@@ -51,26 +61,29 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             const cafeteria = todasLasCafeterias[indice];
             
+            // ✅ CORRECCIÓN CLAVE: CONSTRUCCIÓN DE LA RUTA ABSOLUTA DE LA IMAGEN
+            const rutaImagenCompleta = cafeteria.imagen_url 
+                ? `${API_BASE_URL}/uploads/${cafeteria.imagen_url}` 
+                : './assets/default-image.png'; // Fallback local
+
             // Asigna la clase 'estampado' al contenedor principal si fue visitado
-        const estadoClase = cafeteria.visitado ? 'estampado' : 'bloqueado';
-        //paginaActiva.className = `pagina-activa cafeteria-pasaporte estampado`;
-        paginaActiva.className = `pagina-activa cafeteria-pasaporte ${estadoClase}`;
+            const estadoClase = cafeteria.visitado ? 'estampado' : 'bloqueado';
+            paginaActiva.className = `pagina-activa cafeteria-pasaporte ${estadoClase}`;
+            
             // Creamos el HTML para esa cafetería
             paginaActiva.innerHTML = `
                 <div class="imagen-contenedor">
-                    <img src="${cafeteria.imagen_url || './assets/default-image.png'}" alt="${cafeteria.nombre}">
-                
+                    <img src="${rutaImagenCompleta}" alt="${cafeteria.nombre}"> 
                     
-                
                     <div class="candado-icono">
-                    <span class="material-symbols-outlined">lock</span>
+                        <span class="material-symbols-outlined">lock</span>
                     </div>
                 </div>
 
                 <h3>${cafeteria.nombre}</h3>
                 <p>ubi: ${cafeteria.direccion || 'Dirección no disponible'}</p>
 
-                <img src="Sello.png" class="sello-imagen" alt="Sellado">
+                <img src="./assets/Sello.png" class="sello-imagen" alt="Sellado">
             `;
         }
         // Actualiza el estado de los botones
@@ -79,8 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 4. FUNCIÓN PARA HABILITAR/DESHABILITAR BOTONES
     function actualizarBotones() {
-// Lógica del botón ANTERIOR:
-        // Si el índice es -1 (la portada), deshabilita el botón "Anterior"
+        // Lógica del botón ANTERIOR:
         if (indiceActual === -1) {
             btnAnterior.style.visibility = 'hidden';
             
