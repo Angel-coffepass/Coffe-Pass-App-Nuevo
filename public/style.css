@@ -845,3 +845,24 @@ main{
 @keyframes fadeOut {
     to { opacity: 0; visibility: hidden; }
 }
+
+
+.boton_mapa{
+    display: flex;
+    justify-content: center;
+} 
+.mapa_Down{
+    position: absolute;
+    bottom: 10px;
+    z-index: 500;
+    background-color: var(--nav-color);
+    color: var(--bg-color);
+    padding: 8px;
+    border-radius: 8px;
+}
+@media screen and (min-width: 1100px) {
+    .boton_mapa{
+        top: 40px;
+        display: none;
+    }
+}

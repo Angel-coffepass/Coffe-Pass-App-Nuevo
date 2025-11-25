@@ -1,11 +1,20 @@
 document.addEventListener('DOMContentLoaded', () => {
+    
+    // 🛑 IMPORTANTE: DEFINE LA URL BASE DE TU SERVIDOR EN RAILWAY
+    // Sustituye 'LA_URL_DE_TU_RAILWAY' con tu dominio real (ej: 'https://mi-api-production.up.railway.app')
+    const API_BASE_URL =coffe-pass-app-nuevo-production.up.railway.app; // Usa el dominio actual si el frontend y backend están en el mismo lugar
+    // Si el backend está en un subdominio diferente o un puerto diferente, usa: 
+    // const API_BASE_URL = "LA_URL_DE_TU_RAILWAY"; 
+    // En este caso, usaremos 'window.location.origin' que suele ser suficiente en un entorno de hosting.
+
+
     // ----------------------------------------------------------------------
     // 1. DEFINICIÓN DEL ICONO DE CAFETERÍA
     const CoffeeIcon = L.icon({
         iconUrl: './assets/icono.png', 
-        iconSize: [38, 50],         
-        iconAnchor: [19, 50],       
-        popupAnchor: [0, -45]       
+        iconSize: [38, 50],       
+        iconAnchor: [19, 50],      
+        popupAnchor: [0, -45]      
     });
     // ----------------------------------------------------------------------
 
@@ -13,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const loginButton = document.getElementById('login-button');
     const welcomeMessage = document.getElementById('welcome-message');
     const logoutButton = document.getElementById('logout-button');
-    const adminLink = document.getElementById('adminbutton'); // <-- (Corregido a 'adminbutton' para que coincida con tu HTML)
+    const adminLink = document.getElementById('adminbutton');
     const dropdownMenu = document.getElementById('profile-dropdown-menu');
     
     // --- LÓGICA DE AUTENTICACIÓN (JWT) ---
@@ -40,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 welcomeMessage.style.display = 'block';
 
                 if (data.rol === 'admin' && adminLink) {
-                    adminLink.style.display = 'block'; // <-- (Corregido a 'adminLink')
+                    adminLink.style.display = 'block';
                 }
             } else {
                 localStorage.removeItem('authToken');
@@ -56,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
         mostrarEstadoDesconectado();
     }
     
-    // --- (NUEVO) REFERENCIAS A LOS ELEMENTOS DEL MODAL ---
+    // --- REFERENCIAS A LOS ELEMENTOS DEL MODAL ---
     const modal = document.getElementById('cafeteria-modal');
     const modalOverlay = document.getElementById('modal-overlay');
     const modalCloseBtn = document.getElementById('modal-close-btn');
@@ -98,7 +107,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }).addTo(map);
 
     function obtenerUbicacion() {
-        // ... (Tu código de obtenerUbicacion) ...
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 (position) => {
@@ -133,6 +141,13 @@ document.addEventListener('DOMContentLoaded', () => {
             if (data.success && data.data) {
                 listaContainer.innerHTML = ''; 
                 data.data.forEach(cafeteria => {
+                    
+                    // ✅ CORRECCIÓN CLAVE: CONSTRUCCIÓN DE LA RUTA DE LA IMAGEN
+                    // La BD guarda solo el nombre del archivo. Añadimos el prefijo /uploads/
+                    const rutaImagenCompleta = cafeteria.imagen_url 
+                        ? `${API_BASE_URL}/uploads/${cafeteria.imagen_url}` 
+                        : './assets/coming-soon.png'; // Fallback local
+                        
                     // --- A. LÓGICA DEL MAPA ---
                     if (cafeteria.latitud && cafeteria.longitud) {
                         L.marker([cafeteria.latitud, cafeteria.longitud], { icon: CoffeeIcon })
@@ -145,10 +160,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     link.className = 'coffee-link';
                     link.href = `#cafeteria-${cafeteria.id}`; 
 
-                    // --- (NUEVO) AÑADE EL LISTENER PARA EL MODAL ---
                     link.addEventListener('click', (e) => {
                         e.preventDefault(); 
-                        mostrarModal(cafeteria); // Llama a la función con los datos
+                        mostrarModal(cafeteria, rutaImagenCompleta); // Pasamos la URL completa al modal
                     });
                     
                     const calificacionDiv = document.createElement('div');
@@ -158,7 +172,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     const div = document.createElement('div');
                     div.className = 'link-container';
                     const img = document.createElement('img');    
-                    img.src = cafeteria.imagen_url || 'comingsoon.png'; 
+                    
+                    // APLICAMOS LA RUTA CORREGIDA AQUÍ:
+                    img.src = rutaImagenCompleta; 
+                    
                     img.alt = cafeteria.nombre;
                     const p = document.createElement('p');
                     p.className = 'link-container-title';
@@ -166,14 +183,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     // 1. Crear botón Seguir
                     const btnSeguir = document.createElement('button');
-                    btnSeguir.textContent = 'seguir';
-                    btnSeguir.className = 'btn-seguir'; // (Dale estilos en CSS si quieres)
+                    btnSeguir.textContent = 'Seguir'; // Cambiado a Seguir (mayúscula)
+                    btnSeguir.className = 'btn-seguir';
                     btnSeguir.style.cssText = "margin-top:5px; cursor:pointer; z-index:10; position:relative;";
 
                     // 2. Evento del botón Seguir
                     btnSeguir.addEventListener('click', async (e) => {
-                        e.preventDefault(); // Evita abrir el enlace <a> de la tarjeta
-                        e.stopPropagation(); // Evita que el click se propague a la tarjeta
+                        e.preventDefault(); 
+                        e.stopPropagation(); 
 
                         const token = localStorage.getItem('authToken');
                         if(!token) {
@@ -194,8 +211,8 @@ document.addEventListener('DOMContentLoaded', () => {
                             const result = await response.json();
 
                             if(result.success && result.estado === 'siguiendo') {
-                                // --- AQUÍ LLAMAMOS A LA NOTIFICACIÓN ---
-                                mostrarNotificacion(cafeteria);
+                                // --- Muestra Notificación y actualiza botón ---
+                                mostrarNotificacion(cafeteria, rutaImagenCompleta);
                                 btnSeguir.textContent = 'Olvidar';
                             } else if (result.success) {
                                 btnSeguir.textContent = 'Seguir'; // Si dejó de seguir
@@ -206,24 +223,26 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                     
                     div.appendChild(calificacionDiv);
-                    div.appendChild(img);                  
+                    div.appendChild(img);                
                     div.appendChild(p);                
+                    div.appendChild(btnSeguir); // Añadimos el botón
                     link.appendChild(div);
                     listaContainer.appendChild(link);
                 });
-                
-                // ... (Tu código while para 'Coming Soon') ...
             }
         } catch(error) {
             console.error("Error en fetch de cafeterías:", error);
         }
     }
     
-    // --- (NUEVO) LÓGICA DEL MODAL ---
-    function mostrarModal(cafeteria) {
+    // --- LÓGICA DEL MODAL ---
+    // ✅ CORRECCIÓN: Ahora recibe la ruta de imagen completa
+    function mostrarModal(cafeteria, rutaImagenCompleta) {
         modalTitle.textContent = cafeteria.nombre;
         modalAddress.textContent = cafeteria.direccion || 'Dirección no disponible';
-        modalImg.src = cafeteria.imagen_url || './assets/coming-soon.png';
+        
+        // APLICAMOS LA RUTA CORREGIDA AQUÍ
+        modalImg.src = rutaImagenCompleta; 
         
         modal.classList.add('active');
         modalOverlay.classList.add('active');
@@ -232,13 +251,17 @@ document.addEventListener('DOMContentLoaded', () => {
             if (modalMapInstance) {
                 modalMapInstance.remove(); 
             }
+            // Asegúrate de que modalMapDiv exista y sea visible antes de crear el mapa
             modalMapInstance = L.map(modalMapDiv).setView([cafeteria.latitud, cafeteria.longitud], 16);
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(modalMapInstance);
             L.marker([cafeteria.latitud, cafeteria.longitud], { icon: CoffeeIcon }).addTo(modalMapInstance);
+            
+            // Invalida el tamaño para que el mapa se muestre correctamente dentro del modal
+            modalMapInstance.invalidateSize(); 
         }, 100); 
     }
 
-    // --- (NUEVO) LÓGICA PARA CERRAR EL MODAL ---
+    // --- LÓGICA PARA CERRAR EL MODAL ---
     function cerrarModal() {
         modal.classList.remove('active');
         modalOverlay.classList.remove('active');
@@ -247,37 +270,38 @@ document.addEventListener('DOMContentLoaded', () => {
     modalOverlay.addEventListener('click', cerrarModal); 
 
     // --- FUNCIÓN PARA MOSTRAR NOTIFICACIÓN ---
-function mostrarNotificacion(cafeteria) {
-    const container = document.getElementById('notification-container');
-    
-    // Crear el elemento de notificación
-    const notif = document.createElement('div');
-    notif.className = 'notificacion-toast';
-    notif.innerHTML = `
-        <span class="material-symbols-outlined">notifications_active</span>
-        <div>
-            <strong>¡Siguiendo!</strong><br>
-            Ahora sigues a ${cafeteria.nombre}.<br>
-            <small>(Click para ver detalles)</small>
-        </div>
-    `;
+    // ✅ CORRECCIÓN: Ahora recibe la ruta de imagen completa para pasarla al modal
+    function mostrarNotificacion(cafeteria, rutaImagenCompleta) {
+        const container = document.getElementById('notification-container');
+        
+        // Crear el elemento de notificación
+        const notif = document.createElement('div');
+        notif.className = 'notificacion-toast';
+        notif.innerHTML = `
+            <span class="material-symbols-outlined">notifications_active</span>
+            <div>
+                <strong>¡Siguiendo!</strong><br>
+                Ahora sigues a ${cafeteria.nombre}.<br>
+                <small>(Click para ver detalles)</small>
+            </div>
+        `;
 
-    // --- CLAVE: AL HACER CLICK EN LA NOTIFICACIÓN, ABRE EL MODAL ---
-    notif.addEventListener('click', () => {
-        mostrarModal(cafeteria); // Reutilizamos tu función de modal existente
-        notif.remove(); // Borra la notificación al hacer click
-    });
+        // --- CLAVE: AL HACER CLICK EN LA NOTIFICACIÓN, ABRE EL MODAL ---
+        notif.addEventListener('click', () => {
+            mostrarModal(cafeteria, rutaImagenCompleta); // Reutilizamos tu función de modal existente
+            notif.remove(); // Borra la notificación al hacer click
+        });
 
-    // Añadir al contenedor
-    container.appendChild(notif);
+        // Añadir al contenedor
+        container.appendChild(notif);
 
-    // Borrar automáticamente después de 5 segundos
-    setTimeout(() => {
-        if (notif.parentNode) { // Verifica si aun existe
-            notif.remove();
-        }
-    }, 5000);
-}
+        // Borrar automáticamente después de 5 segundos
+        setTimeout(() => {
+            if (notif.parentNode) { // Verifica si aun existe
+                notif.remove();
+            }
+        }, 5000);
+    }
 
     obtenerUbicacion();
 
