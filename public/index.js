@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // 🛑 IMPORTANTE: DEFINE LA URL BASE DE TU SERVIDOR EN RAILWAY
     // Sustituye 'LA_URL_DE_TU_RAILWAY' con tu dominio real (ej: 'https://mi-api-production.up.railway.app')
-    const API_BASE_URL =coffe-pass-app-nuevo-production.up.railway.app; // Usa el dominio actual si el frontend y backend están en el mismo lugar
+    const API_BASE_URL ="https://coffe-pass-app-nuevo-production.up.railway.app"; // Usa el dominio actual si el frontend y backend están en el mismo lugar
     // Si el backend está en un subdominio diferente o un puerto diferente, usa: 
     // const API_BASE_URL = "LA_URL_DE_TU_RAILWAY"; 
     // En este caso, usaremos 'window.location.origin' que suele ser suficiente en un entorno de hosting.
