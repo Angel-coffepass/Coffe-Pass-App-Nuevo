@@ -225,7 +225,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     div.appendChild(calificacionDiv);
                     div.appendChild(img);                
                     div.appendChild(p);                
-                    div.appendChild(btnSeguir); // Añadimos el botón
+                    // Añadimos el botón
                     link.appendChild(div);
                     listaContainer.appendChild(link);
                 });
