@@ -397,7 +397,7 @@ app.get('/api/pasaporte', verificarToken, async (req, res) => {
 // 🧭 RUTA PARA OBTENER LOS DATOS DEL PERFIL DEL USUARIO
 // Se requiere el middleware 'verificarToken' para asegurar que el usuario esté logueado.
 app.get('/api/perfil', verificarToken, async (req, res) => {
-    // 1. ✅ CORRECCIÓN: Usa req.user.id para acceder al ID del usuario desde el payload del token.
+    // Aquí usamos req.user.id (CORREGIDO)
     const userId = req.user.id; 
 
     try {
@@ -409,17 +409,15 @@ app.get('/api/perfil', verificarToken, async (req, res) => {
                     JSON_OBJECT(
                         'id_sello': p.id,
                         'id_cafeteria': p.id_cafeteria,
-                        // 2. ✅ CORRECCIÓN: Usar fecha_visita, que es el nombre real de la columna.
-                        'fecha_sello': p.fecha_visita, 
+                        'fecha_sello': p.fecha_visita, // Usa fecha_visita (CORREGIDO)
                         'nombre_cafeteria': c.nombre 
                     )
                 ) AS sellos
             FROM usuarios u
-            -- 3. ✅ CORRECCIÓN: Usar la tabla 'pasaporte' y el alias 'p'
-            LEFT JOIN pasaporte p ON u.id = p.id_usuario 
+            LEFT JOIN pasaporte p ON u.id = p.id_usuario // Usa tabla pasaporte (CORREGIDO)
             LEFT JOIN cafeterias c ON p.id_cafeteria = c.id
             WHERE u.id = ?
-            GROUP BY u.id, u.nombre, u.correo;`, 
+            GROUP BY u.id;`, // <-- ¡Simplificamos GROUP BY! Agrupar solo por ID.
             [userId]
         );
 
