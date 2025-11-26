@@ -397,26 +397,27 @@ app.get('/api/pasaporte', verificarToken, async (req, res) => {
 // 🧭 RUTA PARA OBTENER LOS DATOS DEL PERFIL DEL USUARIO
 // Se requiere el middleware 'verificarToken' para asegurar que el usuario esté logueado.
 app.get('/api/perfil', verificarToken, async (req, res) => {
-    const userId = req.userId; // Obtenido del middleware verificarToken
+    // 1. ✅ CORRECCIÓN: Usa req.user.id para acceder al ID del usuario desde el payload del token.
+    const userId = req.user.id; 
 
     try {
         const [rows] = await pool.query(
-            // La consulta une usuarios (u) con sellos (s) y cafeterias (c)
             `SELECT 
                 u.nombre, 
                 u.correo,
-                -- Agrupamos todos los sellos en un array JSON
                 JSON_ARRAYAGG(
                     JSON_OBJECT(
-                        'id_sello': s.id,
-                        'id_cafeteria': s.id_cafeteria,
-                        'fecha_sello': s.fecha_sello,
-                        'nombre_cafeteria': c.nombre  -- USANDO 'c.nombre' que tu tabla confirma
+                        'id_sello': p.id,
+                        'id_cafeteria': p.id_cafeteria,
+                        // 2. ✅ CORRECCIÓN: Usar fecha_visita, que es el nombre real de la columna.
+                        'fecha_sello': p.fecha_visita, 
+                        'nombre_cafeteria': c.nombre 
                     )
                 ) AS sellos
             FROM usuarios u
-            LEFT JOIN sellos s ON u.id = s.id_usuario
-            LEFT JOIN cafeterias c ON s.id_cafeteria = c.id
+            -- 3. ✅ CORRECCIÓN: Usar la tabla 'pasaporte' y el alias 'p'
+            LEFT JOIN pasaporte p ON u.id = p.id_usuario 
+            LEFT JOIN cafeterias c ON p.id_cafeteria = c.id
             WHERE u.id = ?
             GROUP BY u.id, u.nombre, u.correo;`, 
             [userId]
@@ -429,9 +430,10 @@ app.get('/api/perfil', verificarToken, async (req, res) => {
         let usuario = rows[0];
         
         // El resultado JSON_ARRAYAGG viene como string, hay que parsearlo
+        // Manejo de errores por si sellos es NULL
         usuario.sellos = usuario.sellos ? JSON.parse(usuario.sellos) : [];
         
-        // Si el usuario no tiene sellos, la consulta regresa un array con un objeto {id_sello: null}. Lo limpiamos.
+        // Limpiamos el array si solo contiene un objeto nulo (caso de LEFT JOIN sin resultados)
         if (usuario.sellos.length === 1 && usuario.sellos[0].id_sello === null) {
             usuario.sellos = [];
         }
@@ -447,9 +449,7 @@ app.get('/api/perfil', verificarToken, async (req, res) => {
         });
 
     } catch (error) {
-        // MUY IMPORTANTE: Imprimir el error de la DB en la consola del servidor (Railway)
         console.error('Error en la ruta /api/perfil:', error.message);
-        // Responder con un 500 para que el frontend no espere JSON válido.
         res.status(500).json({ success: false, message: 'Error interno del servidor.' });
     }
 });
