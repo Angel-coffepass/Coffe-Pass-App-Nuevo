@@ -11,10 +11,14 @@
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 </head>
 <body>
+    <video id="fondo-video" autoplay muted loop playsinline>
+        <source src="../video-fondo.mp4" type="video/mp4">
+        Tu navegador no soporta el video de fondo.
+    </video>
     <div id="notification-container"></div>
     <header>
-        <a href="../index.html">Volver al inicio</a>
-        <button id="logout-btn">Cerrar Sesión</button>
+        <div class="volver"><a  href="../index.html">Volver al inicio</a></div>
+        
     </header>
 
     <main class="perfil-container">
@@ -25,7 +29,6 @@
             <p><strong>Nombre:</strong> <span id="perfil-nombre">Cargando...</span></p>
             <p><strong>Correo:</strong> <span id="perfil-correo">Cargando...</span></p>
             <p><strong>Sellos Obtenidos:</strong> <span id="sellos-contador">0</span></p>
-            <hr>
         </section>
 
         <section class="pasaporte-sellos">
@@ -35,6 +38,7 @@
                 </div>
         </section>
     </main>
+    <div class="logout-btn"><button  id="logout-btn">Cerrar Sesión</button></div>
     
     <script src="../inicio de sesio y registro/notificaciones.js"></script>
     <script src="perfil.js"></script>
