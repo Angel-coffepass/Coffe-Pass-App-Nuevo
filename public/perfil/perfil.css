@@ -1,0 +1,40 @@
+/* --- ESTILOS PARA PERFIL.HTML --- */
+
+.perfil-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.perfil-info, .pasaporte-sellos {
+    margin-bottom: 30px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+.perfil-info strong {
+    color: #47302e; /* Color de tu menú */
+}
+
+.lista-sellos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.sello-item {
+    padding: 15px;
+    background-color: #f7f7f7;
+    border: 1px dashed #47302e;
+    border-radius: 6px;
+    transition: transform 0.2s;
+}
+
+.sello-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}

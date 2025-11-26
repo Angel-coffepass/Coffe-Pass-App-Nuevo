@@ -540,7 +540,7 @@ main{
 
     /* MAPA (Columna 1, Ocupa 3 filas) */
     .mapa {
-        scroll-margin-top:100px;
+        scroll-margin-top:40px;
         width: 110%; /* Ocupa el 100% de su celda (la columna 1) */
         height: 70vh; 
         margin: 0;

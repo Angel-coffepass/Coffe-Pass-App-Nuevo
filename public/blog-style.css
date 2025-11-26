@@ -39,6 +39,7 @@ body{
     margin-top: 4em;
     z-index: 11;
     display: none;
+    position: absolute;
 }
 .menu-title{
     width: 90%;
@@ -162,7 +163,8 @@ h3{
     color: #47302e;
     margin-left: auto;
     margin-right: auto ;
-    width: 60%;
+    width: 120%;
+    
 }
 .form-opinion{
     position: sticky;
