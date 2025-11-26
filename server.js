@@ -418,6 +418,7 @@ app.get('/api/perfil', verificarToken, async (req, res) => {
                 p.id_cafeteria,
                 p.fecha_visita AS fecha_sello, 
                 c.nombre AS nombre_cafeteria 
+                c.imagen_url // <-- ¡Añade esto!
             FROM pasaporte p
             JOIN cafeterias c ON p.id_cafeteria = c.id
             WHERE p.id_usuario = ?

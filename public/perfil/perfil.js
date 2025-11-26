@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 // 3. MOSTRAR DATOS DEL PASAPORTE
                 sellosContadorEl.textContent = totalSellos;
-                sellosMensajeEl.textContent = `Has visitado ${totalSellos} de X cafeterías. ¡Sigue coleccionando!`; 
+                sellosMensajeEl.textContent = `Has visitado ${totalSellos} ¡Sigue coleccionando!`; 
 
                 renderSellos(sellos);
 
@@ -84,9 +84,10 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Asumiendo que la respuesta incluye nombre de la cafetería y fecha
             div.innerHTML = `
-                <h3>${sello.nombre_cafeteria || 'Cafetería Desconocida'}</h3>
-                <p>Sellado el: ${new Date(sello.fecha_sello).toLocaleDateString()}</p>
-                `;
+            <img src="${API_BASE_URL}/uploads/${sello.imagen_url}" alt="${sello.nombre_cafeteria}" style="width: 100px; height: 100px; object-fit: cover;">
+            <h3>${sello.nombre_cafeteria || 'Cafetería Desconocida'}</h3>
+            <p>Sellado el: ${new Date(sello.fecha_sello).toLocaleDateString()}</p>
+            `;
             listaSellosEl.appendChild(div);
         });
     }
