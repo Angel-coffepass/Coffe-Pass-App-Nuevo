@@ -127,6 +127,7 @@ h2,h3{
     .logout-btn button{
         background-color: var(--nav-color);
         color: var(--bg-color);
+        margin-bottom: 30px;
     }
     .volver{
     background-color: var(--nav-color);
