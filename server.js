@@ -357,27 +357,40 @@ app.post('/api/pasaporte/sellar', verificarToken, async (req, res) => {
 // Ruta para "Mostrar el Libro" (GET)
 app.get('/api/pasaporte', verificarToken, async (req, res) => {
     try {
-        const id_usuario = req.user.id;
+        const id_usuario = req.user.id; // Obtenemos el ID del token
 
+        // ESTA ES LA CONSULTA SQL MÁGICA
         const sql = `
             SELECT 
                 c.id, 
                 c.nombre, 
                 c.direccion, 
-                c.imagen_url,
-                CASE WHEN p.id_usuario IS NOT NULL THEN 1 ELSE 0 END AS visitado 
-            FROM 
-                cafeterias c
-            LEFT JOIN 
-                pasaporte p ON c.id = p.id_cafeteria AND p.id_usuario = ?
+                c.imagen_url, 
+                c.latitud, 
+                c.longitud,
+                CASE 
+                    WHEN p.id IS NOT NULL THEN 1 
+                    ELSE 0 
+                END AS visitado,
+                p.fecha_visita
+            FROM cafeterias c
+            LEFT JOIN pasaporte p 
+                ON c.id = p.id_cafeteria AND p.id_usuario = ?
         `;
-        
-        const [cafeterias] = await pool.execute(sql, [id_usuario]);
-        
-        res.json({ success: true, data: cafeterias });
+
+        const [results] = await pool.execute(sql, [id_usuario]);
+
+        // Convertimos el 1/0 de SQL a true/false de Javascript para tu frontend
+        const pasaporteData = results.map(cafe => ({
+            ...cafe,
+            visitado: cafe.visitado === 1
+        }));
+
+        res.json({ success: true, data: pasaporteData });
+
     } catch (error) {
         console.error('Error al obtener pasaporte:', error);
-        res.status(500).json({ success: false, message: 'Error interno del servidor.' });
+        res.status(500).json({ success: false, message: 'Error del servidor' });
     }
 });
 

@@ -9,6 +9,13 @@ body{
     padding: 0;
     margin-top: 0;
 }
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px #F5E6D3 inset !important;
+    -webkit-text-fill-color: #000000 !important;
+}
 .form__form{
     background-color: #F5E6D3;
     color: #47302e;
@@ -172,3 +179,42 @@ fieldset{
     margin-left: 4px;
 }
 
+/*-------Notificaciones------------*/
+/* Contenedor principal: fijo en la esquina superior derecha */
+#notification-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000; /* Asegura que esté por encima de otros elementos */
+    max-width: 550px;
+}
+
+/* Estilo base para todos los mensajes (Toast) */
+.toast-message {
+    padding: 15px 20px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    color: white;
+    font-size: 14px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    opacity: 0; /* Empieza invisible */
+    transition: opacity 0.5s, transform 0.5s;
+    transform: translateX(100%); /* Empieza fuera de pantalla */
+}
+
+/* Estado de ÉXITO */
+.toast-success {
+    background-color: #28a745; /* Verde */
+}
+
+/* Estado de ERROR */
+.toast-error {
+    background-color: #dc3545; /* Rojo */
+    border-left: 5px solid #bd2130;
+}
+
+/* Mensaje visible (activo) */
+.toast-message.active {
+    opacity: 1;
+    transform: translateX(0); /* Desliza hacia adentro */
+}

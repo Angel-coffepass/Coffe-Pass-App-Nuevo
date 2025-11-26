@@ -32,41 +32,48 @@ body{
 .menu{
     background-color: #47302e;;
     width: 45dvw;
-    height: 80dvh;
-    border-radius: 10px;
-    display: flex;
+    height:80dvh;
+    border-radius: 0 10px  10px 0;
     flex-direction: column;
     box-shadow: 0 0 8px 0 var(--black-color);
     margin-top: 4em;
-    position: absolute;
-    display: none;
     z-index: 11;
+    display: none;
 }
-.opciones-scrollables{
-    height: 70%;
-    z-index: 10;
+.menu-title{
+    width: 90%;
+    margin-left: 0px;
+}
+.opciones-scrollables{  
     flex-grow: 1;
+    min-height: 0;
     overflow-y: auto;
 }
+/* Limpieza de margen inferior del último elemento en la lista */
+.opciones-scrollables a:last-child {
+    margin-bottom: 0; 
+}
+
 .menu a{
     display: block;
-    bottom: -10rem;
-    margin-left: auto;
-    margin-right: auto;
-    width: 90%;
 
 }
 .volver-boton{
     background-color: var(--bg-color);
     color: var(--nav-color);
-    padding: 9px;
+    padding: 8px;
     cursor: pointer;
     border: none;
     border-radius: 8px;
     text-decoration: none;
     text-align: center;
     flex-shrink: 0;
-    margin-top: 65px;
+    width: 90%;
+
+    margin-top:auto;
+    margin-left: auto;   /* Centrado horizontal */
+    margin-right: auto;  /* Centrado horizontal */
+    margin-bottom: 20px;
 }
 .toggle{
     background-color: var(--black-color);
@@ -95,7 +102,7 @@ body{
     display: none;
 }
 .menu-check:checked ~ .menu{
-    display: block;
+    display: flex;
 }
 .menu-check:checked ~ .toggle{
     transform: translateX(45dvw); 
@@ -106,7 +113,7 @@ body{
 
 /*Menu con las cafeterias*/
 .menu-title-container{
-    margin-left: 28px;
+    text-align: center;
     flex-shrink: 0;
     font-size: 10px;
     color: var(--bg-color);
@@ -125,14 +132,19 @@ body{
     }
     .menu{
         width: 15dvw;
-        display: block;
-        position:absolute;
+        display: flex;
         margin-left: 1dvw;
-        
+        border-radius: 10px;
+    }
+    .menu-title{
+        margin-left: 0;
     }
 
     .toggle{
         display: none;
+    }
+    .volver-boton{
+        margin-top: 125px;
     }
 }
 

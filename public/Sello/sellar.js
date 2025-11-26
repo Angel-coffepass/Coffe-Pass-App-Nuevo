@@ -2,8 +2,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     const mensajeEl = document.getElementById('sello-mensaje');
 
-    // 1. Obtiene el ID de la cafetería desde la URL
-    // (Ej. sellar.html?id=5)
+    // 🛑 URL DE TU SERVIDOR EN RAILWAY
+    const API_BASE_URL = "https://coffe-pass-app-nuevo-production.up.railway.app";
+
+    // 1. Obtiene el ID de la cafetería desde la URL (Ej. sellar.html?id=5)
     const params = new URLSearchParams(window.location.search);
     const idCafeteria = params.get('id');
 
@@ -11,9 +13,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const token = localStorage.getItem('authToken');
 
     if (!token) {
-        mensajeEl.textContent = 'Error: Debes iniciar sesión en CoffePass para sellar tu pasaporte.';
-        // Opcional: redirigir al login
-        // window.location.href = '/inicio-de-sesion-y-registro/inicio-de-sesion.html';
+        mensajeEl.textContent = 'Error: Debes iniciar sesión en CoffeePass para sellar tu pasaporte.';
         return;
     }
 
@@ -22,16 +22,18 @@ document.addEventListener('DOMContentLoaded', async () => {
         return;
     }
 
-    // 3. Intenta sellar el pasaporte llamando a la API
+    // 3. Intenta sellar el pasaporte
     try {
-        const response = await fetch('/api/pasaporte/sellar', {
+        // CORRECCIÓN 1: La URL completa va dentro de comillas invertidas ``
+        const response = await fetch(`${API_BASE_URL}/api/pasaporte/sellar`, { 
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}` // Envía el token de seguridad
+                // CORRECCIÓN 2: El valor del encabezado va dentro de comillas invertidas `` y lleva una coma al final
+                'Authorization': `Bearer ${token}`, 
             },
             body: JSON.stringify({
-                id_cafeteria: idCafeteria // Envía el ID del QR
+                id_cafeteria: idCafeteria
             })
         });
 
@@ -39,12 +41,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         if (data.success) {
             mensajeEl.textContent = '¡Felicidades! Has sellado esta cafetería.';
+            mensajeEl.style.color = 'green';
         } else {
-            // Muestra errores (ej. "Ya has sellado esta cafetería.")
-            mensajeEl.textContent = 'Error: ' + data.message;
+            mensajeEl.textContent = data.message;
+            mensajeEl.style.color = 'red';
         }
 
     } catch (error) {
-        mensajeEl.textContent = 'Error de conexión al intentar sellar.';
+        console.error(error);
+        mensajeEl.textContent = 'Error de conexión con el servidor.';
     }
 });

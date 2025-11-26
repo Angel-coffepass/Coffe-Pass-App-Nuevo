@@ -9,17 +9,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
 </head>
 <body>
+    <div id="notification-container"></div>
     <form class="form__form">
         <h1 class="form__title">Inicia sesión</h1>
         <a href="../index.html">
         <img class="form__logo" src="logo.png.jpeg">
         </a>
         <fieldset class="form__fieldset-container">
-        <div class="form__input-container">
-            <input type="text" id="usuario" placeholder=" " required />
-            <label for="usuario">Usuario</label>
+        <div class="form__input-container"  >
+            <input  type="text" id="usuario" autocomplete="off" placeholder=" " required />
+            <label  for="usuario">Usuario</label>
         </div>
-        <div class="form__input-container">
+        <div class="form__input-container" autocomplete="off">
             <input type="password" id="contraseña" placeholder=" " required />
             <label for="contraseña">Contraseña</label>
         </div>
@@ -32,5 +33,6 @@
         <a href="registro.html">Registrarse</a>
     </form>
 </body>
+<script src="notificaciones.js"></script>
 <script src="login.js"></script> </body>
 </html>

@@ -476,8 +476,8 @@ main{
     align-items: center;
     display: flex;
     flex-direction: column;
-    margin-top: 39.9rem;
-    
+    margin-top: 25rem;
+    margin-bottom: 150px;
 
 }
 .mapa-tittle{
@@ -485,15 +485,14 @@ main{
     padding: auto;
     font-size: 25px;
     color: var(--nav-color);
-    scroll-margin-top: 8.3rem;
+    scroll-margin-top: 7rem;
 }
 .mapa-message{
     font-size: 16px;
-    width: auto;
+    width: 100%;
     background-color: var(--nav-color);
     color: var(--bg-color);
     padding: 10px 0;
-    border-radius: 8px;
     text-align: center;
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     /*animation-name: mover-mensaje;
@@ -533,6 +532,7 @@ main{
         align-items: center;
         max-width: 1200px;
         margin: 75rem auto 10rem auto; 
+        margin-bottom: 150px;
         
     }
 
@@ -546,6 +546,7 @@ main{
         margin: 0;
         grid-column: 2 / 3; /* Inicia en columna 1, termina antes de 2 */
         grid-row: 1 / span 3; /* Se extiende por las 3 filas */
+        display: block;
     }
 
     /* TÍTULO (Columna 2, Fila 1) */
@@ -572,6 +573,7 @@ main{
         margin: 0;
         justify-self: start;
         margin-top: 0;
+        border-radius: 8px;
     }
 
     /* IMAGEN (Columna 2, Fila 3) */
@@ -585,7 +587,97 @@ main{
         justify-self:center;
         margin-top: 3rem;
     }
+    .mapa-wrapper{
+        border-radius: 8px;
+    }
+    .map-overlay {
+        border-radius: 8px;
+        width: 110% !important;
+    }
+    .btn-bloquear-mapa {
+        top: 4px !important;
+        right: -45px !important;
+    }
 }
+.mapa-wrapper {
+    position: relative;
+    width: 100%;
+    /* Asegúrate de que tenga el mismo ancho/alto que definiste para tu mapa */
+    height: auto; 
+    grid-column: 2 / 3; /* Mantenemos tu grid de PC */
+    grid-row: 1 / span 3;
+}
+
+/* 2. La capa oscura encima del mapa */
+.map-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4); /* Fondo negro semitransparente */
+    z-index: 999; /* Encima del mapa (Leaflet suele usar z-index 400-800) */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.3s ease;
+    cursor: pointer; /* Indica que se puede tocar */
+}
+
+/* 3. El botón */
+.btn-activar-mapa {
+    background-color: var(--nav-color);
+    color: var(--bg-color);
+    border: none;
+    border-style: none;
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: 30px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    transition: transform 0.2s;
+}
+
+.btn-activar-mapa:hover {
+    transform: scale(1.05);
+    background-color: var(--text-color);
+    color: var(--nav-color);
+}
+
+/* Clase para ocultar el overlay cuando se active */
+.map-overlay.inactivo {
+    opacity: 0;
+    pointer-events: none; /* Permite que los clicks pasen al mapa */
+}
+
+.btn-bloquear-mapa {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 998; /* Debajo del overlay (1000) pero encima del mapa */
+    
+    background-color: var(--nav-color);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    
+    
+    display: none;
+    transition: transform 0.2s;
+}
+
+.btn-bloquear-mapa:active {
+    transform: scale(0.9);
+}
+
+.map-overlay.inactivo ~ .btn-bloquear-mapa {
+    display: block;
+} 
 
 /*-----FIN MAPA-----*/
 

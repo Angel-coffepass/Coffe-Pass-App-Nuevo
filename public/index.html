@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    
 </head>
 <body>
     <video id="fondo-video" autoplay muted loop playsinline>
@@ -64,14 +65,19 @@
             </div>
             
             <div class="boton_mapa">
-                <a class="mapa_Down" href="#mapa">Ver mapa</a>
+                <a class="mapa_Down" href="#Map">Ver mapa</a>
             </div>
 
         </div>
             </div>
-        <div class="mapa-container" id="mapa">
+        <div class="mapa-container">
         <h2 class="mapa-tittle" id="Map">Mapa de café</h2>
+        <div class="mapa-wrapper"> <div id="map-overlay" class="map-overlay">
+        <button id="btn-activar-mapa" class="btn-activar-mapa">Ver Mapa</button>
+    </div>
+        <button id="btn-bloquear-mapa" class="btn-bloquear-mapa" title="Bloquear mapa">🔒</button>
         <div class="mapa" id="mapid"></div>
+        </div>
         <img class="mapa-imagge" src="mapa.png">
         <div class="mapa-message">
             <p>Encuentra y visita cafeterías afiliadas a CoffePass,</p> 

@@ -106,6 +106,24 @@ document.addEventListener('DOMContentLoaded', () => {
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
+    const mapOverlay = document.getElementById('map-overlay');
+    const btnActivarMapa = document.getElementById('btn-activar-mapa');
+    const btnBloquear = document.getElementById('btn-bloquear-mapa');
+
+    if (mapOverlay && btnActivarMapa) {
+        // Función para activar el mapa
+        const activarMapa = () => {
+            mapOverlay.classList.add('inactivo');
+        };
+
+        btnActivarMapa.addEventListener('click', activarMapa);}
+        if (btnBloquear && mapOverlay) {
+        btnBloquear.addEventListener('click', () => {
+            // Simplemente le quitamos la clase 'inactivo' para que vuelva a ser visible
+            mapOverlay.classList.remove('inactivo');
+        });
+    }
+
     function obtenerUbicacion() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
@@ -129,7 +147,9 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log("Geolocalización no soportada.");
             alert("Tu navegador no soporta geolocalización.");
         }
+        
     }
+    
 
     async function cargarCafeterias(usuarioLat, usuarioLng) {
         const listaContainer = document.getElementById('cafeteria-list-grid');
