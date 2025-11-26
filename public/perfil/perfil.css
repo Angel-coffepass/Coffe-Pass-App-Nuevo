@@ -85,6 +85,7 @@ h2,h3{
 }
 .logout-btn{
     text-align: center;
+    position: sticky;
 }
 .logout-btn button{
     background-color: var(--bg-color);
