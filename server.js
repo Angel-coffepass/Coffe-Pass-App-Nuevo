@@ -397,44 +397,36 @@ app.get('/api/pasaporte', verificarToken, async (req, res) => {
 // 🧭 RUTA PARA OBTENER LOS DATOS DEL PERFIL DEL USUARIO
 // Se requiere el middleware 'verificarToken' para asegurar que el usuario esté logueado.
 app.get('/api/perfil', verificarToken, async (req, res) => {
-    // Aquí usamos req.user.id (CORREGIDO)
     const userId = req.user.id; 
 
     try {
-        const [rows] = await pool.query(
-            `SELECT 
-                u.nombre, 
-                u.correo,
-                JSON_ARRAYAGG(
-                    JSON_OBJECT(
-                        'id_sello': p.id,
-                        'id_cafeteria': p.id_cafeteria,
-                        'fecha_sello': p.fecha_visita, // Usa fecha_visita (CORREGIDO)
-                        'nombre_cafeteria': c.nombre 
-                    )
-                ) AS sellos
-            FROM usuarios u
-            LEFT JOIN pasaporte p ON u.id = p.id_usuario // Usa tabla pasaporte (CORREGIDO)
-            LEFT JOIN cafeterias c ON p.id_cafeteria = c.id
-            WHERE u.id = ?
-            GROUP BY u.id;`, // <-- ¡Simplificamos GROUP BY! Agrupar solo por ID.
+        // --- 1. CONSULTA DE DATOS BÁSICOS DEL USUARIO ---
+        const [userRows] = await pool.query(
+            'SELECT nombre, correo FROM usuarios WHERE id = ?', 
             [userId]
         );
 
-        if (rows.length === 0) {
+        if (userRows.length === 0) {
             return res.status(404).json({ success: false, message: 'Usuario no encontrado.' });
         }
+        const usuario = userRows[0];
         
-        let usuario = rows[0];
+        // --- 2. CONSULTA DE TODOS LOS SELLOS DEL USUARIO ---
+        const [sellosRows] = await pool.query(
+            `SELECT 
+                p.id AS id_sello,
+                p.id_cafeteria,
+                p.fecha_visita AS fecha_sello, 
+                c.nombre AS nombre_cafeteria 
+            FROM pasaporte p
+            JOIN cafeterias c ON p.id_cafeteria = c.id
+            WHERE p.id_usuario = ?
+            ORDER BY p.fecha_visita DESC`,
+            [userId]
+        );
         
-        // El resultado JSON_ARRAYAGG viene como string, hay que parsearlo
-        // Manejo de errores por si sellos es NULL
-        usuario.sellos = usuario.sellos ? JSON.parse(usuario.sellos) : [];
-        
-        // Limpiamos el array si solo contiene un objeto nulo (caso de LEFT JOIN sin resultados)
-        if (usuario.sellos.length === 1 && usuario.sellos[0].id_sello === null) {
-            usuario.sellos = [];
-        }
+        // La lista de sellos ya viene limpia de la consulta
+        const sellos = sellosRows;
 
         res.json({ 
             success: true, 
@@ -442,16 +434,16 @@ app.get('/api/perfil', verificarToken, async (req, res) => {
             usuario: {
                 nombre: usuario.nombre,
                 correo: usuario.correo,
-                sellos: usuario.sellos
+                sellos: sellos // <-- Usamos la lista de sellos directa
             }
         });
 
     } catch (error) {
-        console.error('Error en la ruta /api/perfil:', error.message);
+        // ¡Si hay un Error 500, este console.error te dará la razón exacta en los logs de Railway!
+        console.error('Error en la ruta /api/perfil:', error.message); 
         res.status(500).json({ success: false, message: 'Error interno del servidor.' });
     }
 });
-
 // --- RUTA DE SEGUIMIENTO (SEGUIR/DEJAR DE SEGUIR) ---
 app.post('/api/seguir', verificarToken, async (req, res) => {
     const id_usuario = req.user.id;
